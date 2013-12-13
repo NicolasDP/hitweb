@@ -1,0 +1,10 @@
+<header>
+  <div id="header_title">
+    <h1>LAMIH
+    <h2>LXC And Manager In Haskell
+  <nav>
+    <ul>
+      <li>
+        <a href="@{HomeR}">Home
+      <li>
+        <a href="@{AboutR}">About

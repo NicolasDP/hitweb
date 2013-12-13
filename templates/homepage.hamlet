@@ -1,0 +1,7 @@
+$maybe _ <- maid
+  <h1>_{MsgHello} #{show maid}
+  <p>
+    <a href=@{AuthR LogoutR}>Logout
+$nothing
+  <p>
+    <a href=@{AuthR LoginR}>Go to the login page
