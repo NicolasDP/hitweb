@@ -5,6 +5,6 @@
   <nav>
     <ul>
       <li>
-        <a href="@{HomeR}">Home
+        <a href="@{HomeR}">_{MsgNavHeaderHome}
       <li>
-        <a href="@{AboutR}">About
+        <a href="@{AboutR}">_{MsgNavHeaderAbout}

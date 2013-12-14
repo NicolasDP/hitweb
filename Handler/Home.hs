@@ -16,5 +16,5 @@ getHomeR = do
     defaultLayout $ do
         aDomId <- newIdent
         setTitle "LAMIH::home"
-        toWidgetBody $(hamletFile "templates/default-head.hamlet")
+        $(widgetFile "default-head")
         $(widgetFile "homepage")
