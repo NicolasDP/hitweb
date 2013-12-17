@@ -21,6 +21,7 @@ library
                      Settings.Development
                      Handler.Home
                      Handler.About
+                     Handler.Project
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -71,6 +72,7 @@ library
                  , monad-logger                  >= 0.3
                  , fast-logger                   >= 2.0
                  , wai-logger                    >= 2.0
+                 , system-filepath
                  , hit
 
 executable         hitweb

@@ -1,0 +1,4 @@
+$if not isGitProject
+  <h2>#{projectName} is not a Git project or does not exist
+$else
+  <h2>Project: #{projectName}

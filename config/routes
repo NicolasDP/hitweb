@@ -6,3 +6,4 @@
 
 / HomeR GET
 /about AboutR GET
+/project/#Text ProjectR GET

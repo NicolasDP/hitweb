@@ -1,7 +1,10 @@
-$maybe _ <- maid
-  <h1>_{MsgHello} #{show maid}
+<h2>_{MsgHomePageH1Projects}
+
+$if Import.null $ catMaybes projectsList
+  <p>No projects for this Hitweb instance
+$else
   <p>
-    <a href=@{AuthR LogoutR}>Logout
-$nothing
-  <p>
-    <a href=@{AuthR LoginR}>Go to the login page
+    <ul>
+      $forall projectEl <- catMaybes projectsList
+        <li>
+          <a href=@{ProjectR $ pack projectEl}>#{projectEl}
