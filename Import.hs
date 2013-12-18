@@ -16,6 +16,7 @@ import           Settings.Development as Import
 import           Settings.StaticFiles as Import
 import           Yesod.Auth           as Import
 import           Text.Hamlet          as Import (hamletFile)
+import           Data.Text            as Import (pack, unpack)
 
 #if __GLASGOW_HASKELL__ >= 704
 import           Data.Monoid          as Import

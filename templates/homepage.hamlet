@@ -1,10 +1,2 @@
-<h2>_{MsgHomePageH1Projects}
+<h2>_{MsgHomePageH2Home}
 
-$if Import.null $ catMaybes projectsList
-  <p>No projects for this Hitweb instance
-$else
-  <p>
-    <ul>
-      $forall projectEl <- catMaybes projectsList
-        <li>
-          <a href=@{ProjectR $ pack projectEl}>#{projectEl}
