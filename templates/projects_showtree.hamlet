@@ -1,5 +1,9 @@
 <h2>_{MsgHomePageH1Projects}: #{path}
 
+<h4>
+  <a href=@{ProjectsR $ [T.pack path, ".."]}>
+    Up dir
+
 $if Import.null $ catMaybes projectsList
   <p>No projects
 $else
@@ -8,8 +12,8 @@ $else
       $forall projectEl <- catMaybes projectsList
         $case projectEl
           $of HPDir subdir
-            <li>
+            <li> SubDir: #
               <a href=@{ProjectsR $ [T.pack subdir]}>#{subdir}
           $of HPRepo repo
-            <li>
-              <a href=@{ProjectR $ T.pack repo}>#{repo}
+            <li> Repo: #
+              <a href=@{ProjectsR $ [T.pack repo]}>#{repo}

@@ -16,4 +16,3 @@ getProjectR projectName = do
         aDomId <- newIdent
         setTitle $ toHtml $ "HitWeb::project::" ++ (unpack projectName)
         $(widgetFile "default-head")
-        $(widgetFile "project")
