@@ -1,7 +1,7 @@
 <h2>_{MsgHomePageH1Projects}: #{path}
 
 <h4>
-  <a href=@{ProjectsR $ [T.pack path, ".."]}>
+  <a href=@{ProjectsR $ upPath}>
     Up dir
 
 $if Import.null $ catMaybes projectsList

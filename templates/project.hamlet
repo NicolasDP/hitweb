@@ -4,6 +4,6 @@ $else
   <h2>Project: #{path}
 
 <h4>
-  <a href=@{ProjectsR $ [T.pack path, ".."]}>
+  <a href=@{ProjectsR $ upPath}>
     Up dir
 

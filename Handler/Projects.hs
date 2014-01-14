@@ -4,8 +4,8 @@ import Import
 
 import Data.Git
 import Data.Maybe
-import Data.List as L (intersperse, concat)
-import Data.Text as T (pack, unpack)
+import Data.List as L (intersperse, concat, init)
+import Data.Text as T (pack, unpack, splitOn)
 
 import System.Directory
 
@@ -47,6 +47,7 @@ getProjectsR list = do
     extra <- getExtra
     let path = (L.concat $ L.intersperse "/" $ map T.unpack list)
     let fullPath = extraHitwebDir extra
+    let upPath = L.init $ T.splitOn "/" $ T.pack path
     defaultLayout $ do
         aDomId <- newIdent
         projectsList <- liftIO $ getProjectsName fullPath path
