@@ -3,9 +3,14 @@ module Handler.Projects where
 import Import
 
 import Data.Git
+import Data.Git.Storage
+import Data.Git.Revision
 import Data.Maybe
-import Data.List as L (intersperse, concat, init)
+import Data.List as L (intersperse, concat, init, tail, head)
+import Data.List.Split as L (splitOn)
 import Data.Text as T (pack, unpack, splitOn)
+
+import System.Time
 
 import System.Directory
 
@@ -39,6 +44,22 @@ getProjectsName hitwebPath path = do
     contents <- getDirectoryContents $ hitwebPath ++ "/" ++ path
     mapM (insertProject hitwebPath) $ map ((path ++ "/") ++) $ filter (not . flip elem [".", ".."]) contents
 
+getLogList' :: Revision -> Data.Git.Storage.Git -> IO [Commit]
+getLogList' revision git = do
+    ref <- maybe (error "revision cannot be found") id <$> resolveRevision git revision
+    loopTillEmpty ref []
+    where loopTillEmpty ref list = do
+                commit <- getCommit git ref
+                case commitParents commit of
+                    []    -> return $ list ++ [commit]
+                    (p:_) -> loopTillEmpty p (list ++ [commit])
+
+getLogList :: Revision -> FSP.FilePath -> IO [Commit]
+getLogList revision path = withRepo path $ getLogList' revision
+
+fromGitToClockTime :: GitTime -> ClockTime
+fromGitToClockTime (GitTime a b) = TOD a $ toInteger b
+
 -- Projects directory handler
 -- Generate the subtree project for display (see templates/projects.h
 -- file).
@@ -56,4 +77,6 @@ getProjectsR list = do
         $(widgetFile "default-head")
         if not isHitProject
             then $(widgetFile "projects_showtree")
-            else $(widgetFile "project")
+            else do
+                commits <- liftIO $ getLogList (fromString "master") (toGitPath fullPath path)
+                $(widgetFile "project")

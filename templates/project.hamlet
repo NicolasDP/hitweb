@@ -7,3 +7,10 @@ $else
   <a href=@{ProjectsR $ upPath}>
     Up dir
 
+<p>
+  <ul>
+    $forall commit <- take 10 commits
+      <li>
+        #{calendarTimeToString $ toUTCTime $ fromGitToClockTime $ personTime $ commitAuthor commit} #
+        #{tail $ init $ show $ personName $ commitAuthor commit}: #
+        <b>#{head $ L.splitOn "\\n" $ tail $ init $ show $ commitMessage commit}...

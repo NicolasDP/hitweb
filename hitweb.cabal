@@ -75,6 +75,8 @@ library
                  , wai-logger                    >= 2.0
                  , system-filepath
                  , hit
+                 , split
+                 , old-time
 
 executable         hitweb
     if flag(library-only)
