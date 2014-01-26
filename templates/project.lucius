@@ -1,0 +1,4 @@
+table.#{identityLogList}
+{
+  width: 100%;
+}

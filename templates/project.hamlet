@@ -1,9 +1,29 @@
 <h2>Project: #{projectName}
 
-<p>
-  <ul>
-    $forall commit <- take 10 commits
-      <li>
-        #{show $ toZonedTime $ personTime $ commitAuthor commit} #
-        #{tail $ init $ show $ personName $ commitAuthor commit}: #
-        <b>#{L.head $ L.splitOn "\\n" $ L.tail $ L.init $ show $ commitMessage commit}...
+<p .#{identityDescription}>
+  $case description
+    $of Just desc
+      #{desc}
+    $of Nothing
+      No description available yet for this project.
+
+<h4 .#{identityLogList}>
+  Last logs:
+<p .#{identityLogList}>
+  <table .#{identityLogList}>
+    <tr .#{identityLogList}>
+      <th .#{identityLogList}>
+        Date
+      <th .#{identityLogList}>
+        Commit message
+      <th .#{identityLogList}>
+        Author
+    $forall commit <- commits
+      <tr .#{identityLogList}>
+        <td .#{identityLogList}>
+          #{formatTime defaultTimeLocale "%F %T" $ toZonedTime $ personTime $ commitAuthor $ fst commit}
+        <td .#{identityLogList}>
+          <a href=@{ProjectShowCommitR projectName $ T.pack $ show $ snd commit}>
+            <b>#{L.head $ L.splitOn "\n" $ BC.unpack $ commitMessage $ fst commit}...
+        <td .#{identityLogList}>
+          <i>#{tail $ init $ show $ personName $ commitAuthor $ fst commit}

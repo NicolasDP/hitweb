@@ -1,0 +1,38 @@
+<h2>Project: #{projectName}
+
+<p>
+  <table>
+    <tr>
+      <td>author
+      <td>#{BC.unpack $ personName $ commitAuthor commit} #
+          &lt;#{BC.unpack $ personEmail $ commitAuthor commit}&gt;
+      <td>#{formatTime defaultTimeLocale "%F %T" $ toZonedTime $ personTime $ commitAuthor commit}
+    <tr>
+      <td>committer
+      <td>#{BC.unpack $ personName $ commitCommitter commit} #
+          &lt;#{BC.unpack $ personEmail $ commitCommitter commit}&gt;
+      <td>#{formatTime defaultTimeLocale "%F %T" $ toZonedTime $ personTime $ commitCommitter commit}
+    <tr>
+      <td>commit
+      <td>
+        <a href=@{ProjectShowCommitR projectName ref}>
+          #{ref}
+    <tr>
+      <td>tree
+      <td>#{toHexString $ commitTreeish commit}
+    $forall parent <- commitParents commit
+      <tr>
+        <td>parent
+        <td>
+          <a href=@{ProjectShowCommitR projectName $ T.pack $ toHexString parent}>
+            #{toHexString parent}
+        <td>
+          (
+          <a href=@{ProjectShowDiffR projectName (T.pack $ toHexString parent) ref}>
+            Diff
+          )
+
+<h4>#{L.head message}
+<p>
+  $forall line <- L.tail message
+    #{line}

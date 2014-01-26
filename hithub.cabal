@@ -21,6 +21,8 @@ library
                      Settings.Development
                      Handler.Home
                      Handler.Project
+                     Handler.ProjectShowCommit
+                     Handler.ProjectShowDiff
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -73,6 +75,8 @@ library
                  , wai-logger                    >= 2.1        && < 2.2
                  , system-filepath
                  , split
+                 , time
+                 , old-locale
                  , hit
 
 executable         hithub
