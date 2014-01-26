@@ -1,3 +1,5 @@
+Hello: Go f*** yourself
+
 NavHeaderHome: Home
 NavHeaderProjects: Projects
 NavHeaderAbout: About

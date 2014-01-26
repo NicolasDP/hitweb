@@ -68,11 +68,11 @@ widgetFile = (if development then widgetFileReload
 data Extra = Extra
     { extraCopyright :: Text
     , extraAnalytics :: Maybe Text -- ^ Google Analytics
-    , extraHitwebDir :: String
+    , extraProjectsDir :: Text
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
 parseExtra _ o = Extra
     <$> o .:  "copyright"
     <*> o .:? "analytics"
-    <*> o .:  "hitweb-directory"
+    <*> o .:  "projects-directory"

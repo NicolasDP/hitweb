@@ -1,19 +1,38 @@
-{-# LANGUAGE TupleSections, OverloadedStrings #-}
 module Handler.Home where
 
 import Import
 
--- This is a handler function for the GET request method on the HomeR
--- resource pattern. All of your resource patterns are defined in
--- config/routes
---
--- The majority of the code you will write in Yesod lives in these handler
--- functions. You can spread them across multiple files if you are so
--- inclined, or create a single monolithic file.
+import Data.Git.Storage (isRepo)
+
+import Data.Text as T (pack, unpack)
+
+import System.Directory (getDirectoryContents)
+import Filesystem.Path as FSP
+import Filesystem.Path.Rules as FSP
+
+toPath :: Text -> Text -> FSP.FilePath
+toPath dir path = (decodeString posix_ghc704 $ T.unpack dir)
+                  </> (decodeString posix_ghc704 $ T.unpack path)
+
+getProjectsName :: Text -> IO [Text]
+getProjectsName hitwebPath = do
+    contents <- getDirectoryContents $ T.unpack hitwebPath
+    foldr f (return []) $ map T.pack $ Import.filter (not.flip elem [".",".."]) contents
+    where f :: Text -> IO [Text] -> IO [Text]
+          f t accu = do
+                let path = toPath hitwebPath t
+                let gitPath = path </> ".git"
+                isHitProject <- isRepo gitPath
+                if isHitProject then do tmp <- accu
+                                        return $ t:tmp
+                                else accu
+
 getHomeR :: Handler Html
 getHomeR = do
+    extra <- getExtra
     defaultLayout $ do
         aDomId <- newIdent
-        setTitle "HitWeb::home"
+        projectsList <- liftIO $ getProjectsName $ extraProjectsDir extra
+        setTitle "Home Page"
         $(widgetFile "default-head")
         $(widgetFile "homepage")

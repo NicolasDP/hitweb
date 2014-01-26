@@ -7,6 +7,7 @@ module Application
 
 import Import
 import Settings
+import Yesod.Auth
 import Yesod.Default.Config
 import Yesod.Default.Main
 import Yesod.Default.Handlers
@@ -18,7 +19,6 @@ import qualified Database.Persist
 import Database.Persist.Sql (runMigration)
 import Network.HTTP.Conduit (newManager, conduitManagerSettings)
 import Control.Monad.Logger (runLoggingT)
-import qualified GHC.IO.FD
 import System.Log.FastLogger (newLoggerSet, defaultBufSize)
 import Network.Wai.Logger (clockDateCacher)
 import Data.Default (def)
@@ -27,9 +27,7 @@ import Yesod.Core.Types (loggerSet, Logger (Logger))
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
 import Handler.Home
-import Handler.About
 import Handler.Project
-import Handler.Projects
 
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the
@@ -68,7 +66,7 @@ makeFoundation conf = do
               Database.Persist.applyEnv
     p <- Database.Persist.createPoolConfig (dbconf :: Settings.PersistConf)
 
-    loggerSet' <- newLoggerSet defaultBufSize GHC.IO.FD.stdout
+    loggerSet' <- newLoggerSet defaultBufSize Nothing
     (getter, _) <- clockDateCacher
 
     let logger = Yesod.Core.Types.Logger loggerSet' getter

@@ -6,7 +6,3 @@
     <ul>
       <li>
         <a href="@{HomeR}">_{MsgNavHeaderHome}
-      <li>
-        <a href="@{ProjectsR $ []}">_{MsgNavHeaderProjects}
-      <li>
-        <a href="@{AboutR}">_{MsgNavHeaderAbout}

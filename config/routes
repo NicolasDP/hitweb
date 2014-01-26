@@ -5,6 +5,4 @@
 /robots.txt RobotsR GET
 
 / HomeR GET
-/about AboutR GET
 /project/#Text ProjectR GET
-/projects/*Texts ProjectsR GET
