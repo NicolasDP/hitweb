@@ -1,0 +1,27 @@
+<h2>
+  Project: #
+    <a href=@{ProjectR projectName}>
+      #{projectName}
+
+<p .#{identityTree}>
+  <table .#{identityTree}>
+    <tr .#{identityTree}>
+      <th .#{identityTree} id="tree-mode">Mode
+      <th .#{identityTree} id="tree-name">Name
+      <th .#{identityTree}>Ref
+    $forall tree <- treeList
+      <tr .#{identityTree}>
+      $case tree
+        $of (priv, name, TreeFile refFile)
+          <td .#{identityNew ++ "mode"}>#{show priv}
+          <td .#{identityNew ++ "name"}>#{BC.unpack name}
+          <td .#{identityNew ++ "ref"}>
+            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString refFile}>
+              #{toHexString refFile}
+        $of (priv, name, TreeDir refDir _)
+          <td .#{identityNew ++ "mode"}>#{show priv}
+          <td .#{identityNew ++ "name"}">
+            <b>#{BC.unpack name}
+          <td .#{identityNew ++ "ref"}>
+            <a href=@{ProjectShowTreeR projectName $ T.pack $ toHexString refDir}>
+              #{toHexString refDir}

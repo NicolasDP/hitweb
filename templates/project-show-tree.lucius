@@ -1,0 +1,31 @@
+table.#{identityTree}
+{
+  width: 100%;
+}
+
+#tree-mode
+{
+  width: 20%
+}
+
+#tree-name
+{
+  width: 80%
+}
+
+td.#{identityNew ++ "mode"}
+{
+  text-align: center;
+}
+
+td.#{identityNew ++ "name"}
+{
+  padding-left: 5px;
+  text-align: left;
+}
+
+td.#{identityNew ++ "ref"}
+{
+  padding-left: 5px;
+  text-align: right;
+}

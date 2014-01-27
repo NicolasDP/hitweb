@@ -23,6 +23,8 @@ library
                      Handler.Project
                      Handler.ProjectShowCommit
                      Handler.ProjectShowDiff
+                     Handler.ProjectShowTree
+                     Handler.ProjectShowBlob
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

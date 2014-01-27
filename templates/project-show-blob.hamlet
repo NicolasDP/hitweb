@@ -1,0 +1,11 @@
+<h2>
+  Project: #
+    <a href=@{ProjectR projectName}>
+      #{projectName}
+
+<p>
+  $case fileContent
+    $of Just content
+      <pre>
+        #{BL.unpack $ oiData content}
+    $of Nothing

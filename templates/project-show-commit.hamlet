@@ -22,7 +22,9 @@
           #{ref}
     <tr>
       <td>tree
-      <td>#{toHexString $ commitTreeish commit}
+      <td>
+        <a href=@{ProjectShowTreeR projectName $ T.pack $ toHexString $ commitTreeish commit}>
+          #{toHexString $ commitTreeish commit}
     $forall parent <- commitParents commit
       <tr>
         <td>parent
