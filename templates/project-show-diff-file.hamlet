@@ -1,0 +1,77 @@
+<div id="accordion">
+  $forall diffFile <- diffList
+    <h3>
+      #{BC.unpack $ hitFilename diffFile}
+    <div>
+      $forall diffContent <- hitDiff diffFile
+        $case diffContent
+          $of HitDiffRefs r1 r2
+            <p>Diff #{toHexString r1} #{toHexString r2}
+          $of HitDiffAddition bs
+            <p>New file: #{toHexString $ bsRef bs}
+          $of HitDiffDeletion bs
+            <p>Deleted file: #{toHexString $ bsRef bs}
+          $of _
+            <p> #
+      $forall diffContent <- hitDiff diffFile
+        $case diffContent
+          $of HitDiffMode m1 m2
+            <p> #{show m1} -> #{show m2}
+          $of _
+            <p> #
+
+      $forall diffContent <- hitDiff diffFile
+        $case diffContent
+          $of HitDiffBinChange
+            <p>Binary file changes
+          $of HitDiffAddition bNew
+            $case bsContent bNew
+              $of BinaryContent _
+                <p>Binary file added
+              $of FileContent lines
+                <p>
+                  <table>
+                    $forall line <- lines
+                      <tr class="addition">
+                        <td> #
+                        <td>+
+                        <td>#{BL.unpack line}
+          $of HitDiffDeletion bOld
+            $case bsContent bOld
+              $of BinaryContent _
+                <p>Binary file removed
+              $of FileContent lines
+                <p>
+                  <table>
+                    $forall line <- lines
+                      <tr class="deletion">
+                        <td>-#
+                        <td> #
+                        <td>#{BL.unpack line}
+          $of HitDiffChange listOfDiff
+            <table>
+              $forall line <- L.zip infiniteList listOfDiff
+                $case (snd line)
+                  $of Both _ newLine
+                    <tr class="both">
+                      <td> #{show $ fst line}
+                      <td> #
+                      <td> #
+                      <td>
+                          #{BL.unpack newLine}
+                  $of New newLine
+                    <tr class="addition">
+                      <td> #{show $ fst line}
+                      <td> #
+                      <td>+
+                      <td>
+                          #{BL.unpack newLine}
+                  $of Old oldLine
+                    <tr class="deletion">
+                      <td> #{show $ fst line}
+                      <td>-#
+                      <td> #
+                      <td>
+                          #{BL.unpack oldLine}
+          $of _
+            <p> #

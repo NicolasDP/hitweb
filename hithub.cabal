@@ -77,7 +77,8 @@ library
                  , split
                  , time
                  , old-locale
-                 , hit
+                 , patience
+                 , hit                           >= 0.5.3     && < 0.5.4
 
 executable         hithub
     if flag(library-only)

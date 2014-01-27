@@ -1,1 +1,19 @@
-<h2>Project: #{projectName}
+<h2>
+  Project: #
+    <a href=@{ProjectR projectName}>
+      #{projectName}
+
+<h3>Diff
+<p>
+  <table>
+    <tr>
+      <td>new commit
+      <td>
+        <a href=@{ProjectShowCommitR projectName newRef}>
+          #{newRef}
+    <tr>
+      <td>old commit
+      <td>
+        <a href=@{ProjectShowCommitR projectName oldRef}>
+          #{oldRef}
+

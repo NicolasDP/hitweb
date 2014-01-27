@@ -1,4 +1,7 @@
-<h2>Project: #{projectName}
+<h2>
+  Project: #
+    <a href=@{ProjectR projectName}>
+      #{projectName}
 
 <p .#{identityDescription}>
   $case description
