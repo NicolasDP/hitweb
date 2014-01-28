@@ -6,11 +6,22 @@
       $forall diffContent <- hitDiff diffFile
         $case diffContent
           $of HitDiffRefs r1 r2
-            <p>Diff #{toHexString r1} #{toHexString r2}
+            <p>
+              Diff #
+              <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r1}>
+                #{toHexString r1}
+              ..
+              <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r2}>
+                #{toHexString r2}
           $of HitDiffAddition bs
-            <p>New file: #{toHexString $ bsRef bs}
+            <p>
+              New file: #
+              <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString $ bsRef bs}>
+                #{toHexString $ bsRef bs}
           $of HitDiffDeletion bs
-            <p>Deleted file: #{toHexString $ bsRef bs}
+            <p>Deleted file: #
+              <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString $ bsRef bs}>
+                #{toHexString $ bsRef bs}
           $of _
             <p> #
       $forall diffContent <- hitDiff diffFile
