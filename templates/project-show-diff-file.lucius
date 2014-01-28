@@ -2,15 +2,34 @@ tr.addition
 {
   color:green;
   white-space:pre;
+  font-family: "Courier New";
+}
+
+tr.addition:hover {
+  background-color: #C7FEC5;
 }
 
 tr.deletion
 {
   color:red;
   white-space:pre;
+  font-family: "Courier New";
+}
+
+tr.deletion:hover {
+  background-color: #FEC5C9;
 }
 
 tr.both
 {
   white-space:pre;
+  font-family: "Courier New";
+}
+
+tr.both:hover {
+  background-color: #E0E3FD;
+}
+
+p.#{identityDiffFile}
+{
 }

@@ -32,57 +32,58 @@
             <p> #
 
       $forall diffContent <- hitDiff diffFile
-        $case diffContent
-          $of HitDiffBinChange
-            <p>Binary file changes
-          $of HitDiffAddition bNew
-            $case bsContent bNew
-              $of BinaryContent _
-                <p>Binary file added
-              $of FileContent lines
-                <p>
-                  <table>
-                    $forall line <- lines
+        <p .#{identityDiffFile}>
+          $case diffContent
+            $of HitDiffBinChange
+              Binary file changes
+            $of HitDiffAddition bNew
+              $case bsContent bNew
+                $of BinaryContent _
+                  <p>Binary file added
+                $of FileContent lines
+                  <p>
+                    <table>
+                      $forall line <- lines
+                        <tr class="addition">
+                          <td> #
+                          <td>+
+                          <td>#{BL.unpack line}
+            $of HitDiffDeletion bOld
+              $case bsContent bOld
+                $of BinaryContent _
+                  <p>Binary file removed
+                $of FileContent lines
+                  <p>
+                    <table>
+                      $forall line <- lines
+                        <tr class="deletion">
+                          <td>-#
+                          <td> #
+                          <td>#{BL.unpack line}
+            $of HitDiffChange listOfDiff
+              <table>
+                $forall line <- L.zip infiniteList listOfDiff
+                  $case (snd line)
+                    $of Both _ newLine
+                      <tr class="both">
+                        <td> #{show $ fst line}
+                        <td> #
+                        <td> #
+                        <td>
+                            #{BL.unpack newLine}
+                    $of New newLine
                       <tr class="addition">
+                        <td> #{show $ fst line}
                         <td> #
                         <td>+
-                        <td>#{BL.unpack line}
-          $of HitDiffDeletion bOld
-            $case bsContent bOld
-              $of BinaryContent _
-                <p>Binary file removed
-              $of FileContent lines
-                <p>
-                  <table>
-                    $forall line <- lines
+                        <td>
+                            #{BL.unpack newLine}
+                    $of Old oldLine
                       <tr class="deletion">
+                        <td> #{show $ fst line}
                         <td>-#
                         <td> #
-                        <td>#{BL.unpack line}
-          $of HitDiffChange listOfDiff
-            <table>
-              $forall line <- L.zip infiniteList listOfDiff
-                $case (snd line)
-                  $of Both _ newLine
-                    <tr class="both">
-                      <td> #{show $ fst line}
-                      <td> #
-                      <td> #
-                      <td>
-                          #{BL.unpack newLine}
-                  $of New newLine
-                    <tr class="addition">
-                      <td> #{show $ fst line}
-                      <td> #
-                      <td>+
-                      <td>
-                          #{BL.unpack newLine}
-                  $of Old oldLine
-                    <tr class="deletion">
-                      <td> #{show $ fst line}
-                      <td>-#
-                      <td> #
-                      <td>
-                          #{BL.unpack oldLine}
-          $of _
-            <p> #
+                        <td>
+                            #{BL.unpack oldLine}
+            $of _
+              <p> #

@@ -35,4 +35,5 @@ getProjectShowDiffR projectName oldRef newRef = do
             else do diffList <- liftIO $ withRepo (projectPathF </> ".git") $ getDiff (fromHexString $ T.unpack oldRef) (fromHexString $ T.unpack newRef)
                     $(widgetFile "project-show-diff")
                     let infiniteList = [1..] :: [Integer]
+                    identityDiffFile <- newIdent
                     $(widgetFile "project-show-diff-file")
