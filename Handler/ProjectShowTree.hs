@@ -25,6 +25,7 @@ myGetTreeMaybe ref git = do
 getProjectShowTreeR :: Text -> Text -> Handler Html
 getProjectShowTreeR projectName ref = do
     extra <- getExtra
+    maid <- maybeAuthId
     let projectsDir = extraProjectsDir extra
     let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
     let projectPathF = toPath projectPathT

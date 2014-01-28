@@ -40,6 +40,7 @@ getLogList revision path = withRepo path $ getLogList' revision
 getProjectR :: Text -> Handler Html
 getProjectR projectName  = do
     extra <- getExtra
+    maid <- maybeAuthId
     let projectsDir = extraProjectsDir extra
     let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
     let projectPathF = toPath projectPathT

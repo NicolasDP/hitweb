@@ -9,7 +9,6 @@ import Data.Git.Storage
 import Data.Git.Storage.Object
 import Data.Text as T (pack,unpack,concat)
 
-import Data.ByteString.Char8 as BC (unpack)
 import Data.ByteString.Lazy.Char8 as BL
 
 import Filesystem.Path as FSP
@@ -24,6 +23,7 @@ myGetBlobMaybe ref git = getObjectRaw git ref True
 getProjectShowBlobR :: Text -> Text -> Handler Html
 getProjectShowBlobR projectName ref = do
     extra <- getExtra
+    maid <- maybeAuthId
     let projectsDir = extraProjectsDir extra
     let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
     let projectPathF = toPath projectPathT

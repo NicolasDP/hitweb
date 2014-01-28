@@ -20,7 +20,9 @@ import Text.Jasmine (minifym)
 import Text.Hamlet (hamletFile)
 import Yesod.Core.Types (Logger)
 
-import Data.Text (Text)
+import Data.Text as T (Text, unpack, lines)
+import Data.Text.IO as T (readFile)
+import System.Directory (doesFileExist)
 
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -48,6 +50,30 @@ mkMessage "App" "messages" "en"
 mkYesodData "App" $(parseRoutesFile "config/routes")
 
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
+
+checkProjUser :: Text -> HandlerT App IO AuthResult
+checkProjUser projectName = do
+    mId <- maybeAuth
+    case mId of
+        Nothing -> do checkAuth <- checkProjUserInternal "anybody"
+                      if checkAuth then return Authorized
+                                   else return AuthenticationRequired
+        Just (Entity _ n) -> do
+            checkAuth <- checkProjUserInternal (userIdent n)
+            case checkAuth of
+                False -> return $ Unauthorized $ userIdent n
+                True  -> return Authorized
+    where
+    checkProjUserInternal :: Text -> HandlerT App IO Bool
+    checkProjUserInternal userEmail = do
+        extra <- getExtra
+        let authProjFile = (T.unpack $ extraProjectsDir extra) ++ "/" ++ (T.unpack projectName) ++"/.hitweb.authorized"
+        isFile <- liftIO $ doesFileExist authProjFile
+        case isFile of
+            False -> return True
+            True  -> do content <- liftIO $ T.readFile authProjFile
+                        let contentLines = T.lines content
+                        return $ elem userEmail contentLines
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
@@ -86,6 +112,14 @@ instance Yesod App where
 
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
+
+    -- route name, then a boolean indicating if it is a write request
+    isAuthorized (ProjectR           projectName    ) _ = checkProjUser projectName
+    isAuthorized (ProjectShowCommitR projectName _  ) _ = checkProjUser projectName
+    isAuthorized (ProjectShowTreeR   projectName _  ) _ = checkProjUser projectName
+    isAuthorized (ProjectShowDiffR   projectName _ _) _ = checkProjUser projectName
+    isAuthorized (ProjectShowBlobR   projectName _  ) _ = checkProjUser projectName
+    isAuthorized _                                    _ = return Authorized
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows

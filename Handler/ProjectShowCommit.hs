@@ -27,6 +27,7 @@ myGetCommit ref git = getCommitMaybe git ref
 getProjectShowCommitR :: Text -> Text -> Handler Html
 getProjectShowCommitR projectName ref = do
     extra <- getExtra
+    maid <- maybeAuthId
     let projectsDir = extraProjectsDir extra
     let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
     let projectPathF = toPath projectPathT

@@ -5,4 +5,11 @@
   <nav>
     <ul>
       <li>
-        <a href="@{HomeR}">_{MsgNavHeaderHome}
+        <a href=@{HomeR}>_{MsgNavHeaderHome}
+      $case maid
+        $of Just userID
+          <li>
+            <a href=@{AuthR LogoutR}>Logout (#{show $ unKey userID})
+        $of Nothing
+          <li>
+            <a href=@{AuthR LoginR}>Login

@@ -22,6 +22,7 @@ toPath path = FSP.decodeString posix_ghc704 $ T.unpack path
 getProjectShowDiffR :: Text -> Text -> Text -> Handler Html
 getProjectShowDiffR projectName oldRef newRef = do
     extra <- getExtra
+    maid <- maybeAuthId
     let projectsDir = extraProjectsDir extra
     let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
     let projectPathF = toPath projectPathT
