@@ -26,6 +26,7 @@ library
                      Handler.ProjectShowTree
                      Handler.ProjectShowBlob
                      Hitweb.Auth
+                     Hitweb.Filepath
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

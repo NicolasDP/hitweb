@@ -5,15 +5,9 @@ import Import
 import Data.Git
 import Data.Git.Ref
 import Data.Git.Repository
-import Data.Text as T (pack,unpack,concat)
+import Data.Text as T (pack,unpack)
 
 import Data.ByteString.Char8 as BC (unpack)
-
-import Filesystem.Path as FSP
-import Filesystem.Path.Rules as FSP
-
-toPath :: Text -> FSP.FilePath
-toPath path = FSP.decodeString posix_ghc704 $ T.unpack path
 
 myGetTreeMaybe :: Ref -> Git -> IO HTree
 myGetTreeMaybe ref git = do
@@ -25,16 +19,13 @@ myGetTreeMaybe ref git = do
 getProjectShowTreeR :: Text -> Text -> Handler Html
 getProjectShowTreeR projectName ref = do
     extra <- getExtra
-    let projectsDir = extraProjectsDir extra
-    let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
-    let projectPathF = toPath projectPathT
     defaultLayout $ do
         identityTree <- newIdent
-        isHitProject <- liftIO $ isRepo (projectPathF </> ".git")
         setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
-        if not isHitProject
-            then error $ "No such project: " ++ (T.unpack projectName)
-            else do
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) projectName
+        case hitProjectPath of
+            Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
+            Just path -> do
                 let identityNew = T.unpack identityTree
-                treeList <- liftIO $ withRepo (projectPathF </> ".git") $ myGetTreeMaybe $ fromHexString $ T.unpack ref
+                treeList <- liftIO $ withRepo path $ myGetTreeMaybe $ fromHexString $ T.unpack ref
                 $(widgetFile "project-show-tree")

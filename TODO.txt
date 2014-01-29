@@ -3,4 +3,3 @@ for release 0.1:
  * Diff context lines
  * show tags associated on commits
  * show branch list
- * implement a common library for handlers
