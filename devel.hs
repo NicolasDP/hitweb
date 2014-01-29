@@ -1,5 +1,5 @@
 {-# LANGUAGE PackageImports #-}
-import "hithub" Application (getApplicationDev)
+import "hitweb" Application (getApplicationDev)
 import Network.Wai.Handler.Warp
     (runSettings, defaultSettings, settingsPort)
 import Control.Concurrent (forkIO)

@@ -1,4 +1,4 @@
-exec: ../dist/build/hithub/hithub
+exec: ../dist/build/hitweb/hitweb
 args:
     - production
 host: <<HOST-NOT-SET>>

@@ -1,20 +1,20 @@
 Default: &defaults
-  database: hithub.sqlite3
+  database: hitweb.sqlite3
   poolsize: 10
 
 Development:
   <<: *defaults
 
 Testing:
-  database: hithub_test.sqlite3
+  database: hitweb_test.sqlite3
   <<: *defaults
 
 Staging:
-  database: hithub_staging.sqlite3
+  database: hitweb_staging.sqlite3
   poolsize: 100
   <<: *defaults
 
 Production:
-  database: hithub_production.sqlite3
+  database: hitweb_production.sqlite3
   poolsize: 100
   <<: *defaults
