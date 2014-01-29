@@ -29,4 +29,13 @@
           <a href=@{ProjectShowCommitR projectName $ T.pack $ show $ snd commit}>
             <b>#{L.head $ L.splitOn "\n" $ BC.unpack $ commitMessage $ fst commit}...
         <td .#{identityLogList}>
-          <i>#{tail $ init $ show $ personName $ commitAuthor $ fst commit}
+          <i>#{L.tail $ L.init $ show $ personName $ commitAuthor $ fst commit}
+
+<h4 .#{identityReadme}>
+  README.md
+<p .#{identityReadme}>
+  $case readmeMD
+    $of Just content
+      #{content}
+    $of Nothing
+      No README.md file.
