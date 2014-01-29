@@ -1,5 +1,4 @@
 for release 0.1:
- * README.md in the summary
  * Diff context lines
  * show tags associated on commits
  * show branch list

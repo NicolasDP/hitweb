@@ -11,12 +11,13 @@ Features
   * Hitweb provides usual functionalities like: git summary, log, commit, diff, exploring the sources (Trees and blobs)
   * Identification and authorization:
     * create the file .hitweb.authorized and add users authorized to access this repo
+    * add "anybody" in this file will require authentified users (no public access)
     * if no file, this is a plublic repo (or if the presence of the world "anybody" in the authorized file)
   * update the path where your repository is in the file config/settings.yaml
 
   * Planned features:
     * code review
-    
+
 Contributions
 =============
 
