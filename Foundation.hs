@@ -81,6 +81,7 @@ instance Yesod App where
     defaultLayout widget = do
         master <- getYesod
         mmsg <- getMessage
+        maid <- maybeAuthId
 
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
@@ -93,6 +94,7 @@ instance Yesod App where
                 [ css_normalize_css
                 , css_bootstrap_css
                 ])
+            $(widgetFile "default-head")
             $(widgetFile "default-layout")
         giveUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 

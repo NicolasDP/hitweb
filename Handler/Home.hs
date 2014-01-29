@@ -30,10 +30,8 @@ getProjectsName hitwebPath = do
 getHomeR :: Handler Html
 getHomeR = do
     extra <- getExtra
-    maid <- maybeAuthId
     defaultLayout $ do
         aDomId <- newIdent
         projectsList <- liftIO $ getProjectsName $ extraProjectsDir extra
         setTitle "Home Page"
-        $(widgetFile "default-head")
         $(widgetFile "homepage")

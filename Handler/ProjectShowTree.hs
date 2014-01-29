@@ -25,7 +25,6 @@ myGetTreeMaybe ref git = do
 getProjectShowTreeR :: Text -> Text -> Handler Html
 getProjectShowTreeR projectName ref = do
     extra <- getExtra
-    maid <- maybeAuthId
     let projectsDir = extraProjectsDir extra
     let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
     let projectPathF = toPath projectPathT
@@ -33,7 +32,6 @@ getProjectShowTreeR projectName ref = do
         identityTree <- newIdent
         isHitProject <- liftIO $ isRepo (projectPathF </> ".git")
         setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
-        $(widgetFile "default-head")
         if not isHitProject
             then error $ "No such project: " ++ (T.unpack projectName)
             else do

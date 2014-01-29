@@ -40,7 +40,6 @@ getLogList revision path = withRepo path $ getLogList' revision
 getProjectR :: Text -> Handler Html
 getProjectR projectName  = do
     extra <- getExtra
-    maid <- maybeAuthId
     let projectsDir = extraProjectsDir extra
     let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
     let projectPathF = toPath projectPathT
@@ -49,7 +48,6 @@ getProjectR projectName  = do
         identityLogList <- newIdent
         isHitProject <- liftIO $ isRepo (projectPathF </> ".git")
         setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
-        $(widgetFile "default-head")
         if not isHitProject
             then error $ "No such project: " ++ (T.unpack projectName)
             else do

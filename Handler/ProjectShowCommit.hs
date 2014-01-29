@@ -27,14 +27,12 @@ myGetCommit ref git = getCommitMaybe git ref
 getProjectShowCommitR :: Text -> Text -> Handler Html
 getProjectShowCommitR projectName ref = do
     extra <- getExtra
-    maid <- maybeAuthId
     let projectsDir = extraProjectsDir extra
     let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
     let projectPathF = toPath projectPathT
     defaultLayout $ do
         isHitProject <- liftIO $ isRepo (projectPathF </> ".git")
         setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
-        $(widgetFile "default-head")
         if not isHitProject
             then error $ "No such project: " ++ (T.unpack projectName)
             else do

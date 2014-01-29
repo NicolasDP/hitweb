@@ -22,7 +22,6 @@ toPath path = FSP.decodeString posix_ghc704 $ T.unpack path
 getProjectShowDiffR :: Text -> Text -> Text -> Handler Html
 getProjectShowDiffR projectName oldRef newRef = do
     extra <- getExtra
-    maid <- maybeAuthId
     let projectsDir = extraProjectsDir extra
     let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
     let projectPathF = toPath projectPathT
@@ -30,7 +29,6 @@ getProjectShowDiffR projectName oldRef newRef = do
         isHitProject <- liftIO $ isRepo (projectPathF </> ".git")
         setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
         addScriptRemote "http://code.jquery.com/ui/1.10.4/jquery-ui.js"
-        $(widgetFile "default-head")
         if not isHitProject
             then error $ "No such project: " ++ (T.unpack projectName)
             else do diffList <- liftIO $ withRepo (projectPathF </> ".git") $ getDiff (fromHexString $ T.unpack oldRef) (fromHexString $ T.unpack newRef)

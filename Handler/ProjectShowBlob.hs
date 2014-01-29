@@ -23,7 +23,6 @@ myGetBlobMaybe ref git = getObjectRaw git ref True
 getProjectShowBlobR :: Text -> Text -> Handler Html
 getProjectShowBlobR projectName ref = do
     extra <- getExtra
-    maid <- maybeAuthId
     let projectsDir = extraProjectsDir extra
     let projectPathT = T.concat [projectsDir,T.pack "/",projectName]
     let projectPathF = toPath projectPathT
@@ -31,7 +30,6 @@ getProjectShowBlobR projectName ref = do
         identityTree <- newIdent
         isHitProject <- liftIO $ isRepo (projectPathF </> ".git")
         setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
-        $(widgetFile "default-head")
         if not isHitProject
             then error $ "No such project: " ++ (T.unpack projectName)
             else do
