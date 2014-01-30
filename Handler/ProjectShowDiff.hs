@@ -2,9 +2,8 @@ module Handler.ProjectShowDiff where
 
 import Import
 
-import Data.List as L
 import Data.Git
-import Data.Git.Diff
+import Data.Git.Diff (getDiffWith)
 import Data.Git.Ref
 import Data.Algorithm.Patience (Item(..))
 
@@ -23,8 +22,7 @@ getProjectShowDiffR projectName oldRef newRef = do
         case hitProjectPath of
             Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
             Just path -> do
-                    diffList <- liftIO $ withRepo path $ getDiff (fromHexString $ T.unpack oldRef) (fromHexString $ T.unpack newRef)
+                    diffList <- liftIO $ withRepo path $ getDiffWith hitwebDiff [] (fromHexString $ T.unpack oldRef) (fromHexString $ T.unpack newRef)
                     $(widgetFile "project-show-diff")
-                    let infiniteList = [1..] :: [Integer]
                     identityDiffFile <- newIdent
                     $(widgetFile "project-show-diff-file")

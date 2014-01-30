@@ -18,6 +18,8 @@ import           Settings.Development as Import
 import           Settings.StaticFiles as Import
 
 import           Hitweb.Filepath      as Import
+import           Hitweb.Auth          as Import
+import           Hitweb.Hit           as Import
 
 #if __GLASGOW_HASKELL__ >= 704
 import           Data.Monoid          as Import

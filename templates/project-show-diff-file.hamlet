@@ -1,89 +1,99 @@
 <div id="accordion">
   $forall diffFile <- diffList
     <h3>
-      #{BC.unpack $ hitFilename diffFile}
+      #{BC.unpack $ hFileName diffFile}
     <div>
-      $forall diffContent <- hitDiff diffFile
-        $case diffContent
-          $of HitDiffRefs r1 r2
-            <p>
-              Diff #
-              <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r1}>
-                #{toHexString r1}
-              ..
-              <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r2}>
-                #{toHexString r2}
-          $of HitDiffAddition bs
-            <p>
-              New file: #
-              <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString $ bsRef bs}>
-                #{toHexString $ bsRef bs}
-          $of HitDiffDeletion bs
-            <p>Deleted file: #
-              <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString $ bsRef bs}>
-                #{toHexString $ bsRef bs}
-          $of _
-            <p> #
-      $forall diffContent <- hitDiff diffFile
-        $case diffContent
-          $of HitDiffMode m1 m2
-            <p> #{show m1} -> #{show m2}
-          $of _
-            <p> #
+      <p>
+        $case hFileRef diffFile
+          $of NewRef r1
+            New file: #
+            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r1}>
+              #{toHexString r1}
+          $of OldRef r2
+            Deleted file: #
+            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r2}>
+              #{toHexString r2}
+          $of ModifiedRef r1 r2
+            Diff #
+            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r1}>
+              #{toHexString r1}
+            ..
+            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r2}>
+              #{toHexString r2}
+          $of UnModifiedRef r1
+            Ref #
+            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r1}>
+              #{toHexString r1}
 
-      $forall diffContent <- hitDiff diffFile
-        <p .#{identityDiffFile}>
-          $case diffContent
-            $of HitDiffBinChange
-              Binary file changes
-            $of HitDiffAddition bNew
-              $case bsContent bNew
-                $of BinaryContent _
-                  <p>Binary file added
-                $of FileContent lines
-                  <p>
-                    <table>
-                      $forall line <- lines
-                        <tr class="addition">
-                          <td> #
-                          <td>+
-                          <td>#{BL.unpack line}
-            $of HitDiffDeletion bOld
-              $case bsContent bOld
-                $of BinaryContent _
-                  <p>Binary file removed
-                $of FileContent lines
-                  <p>
-                    <table>
-                      $forall line <- lines
-                        <tr class="deletion">
-                          <td>-#
-                          <td> #
-                          <td>#{BL.unpack line}
-            $of HitDiffChange listOfDiff
-              <table>
-                $forall line <- L.zip infiniteList listOfDiff
-                  $case (snd line)
-                    $of Both _ newLine
-                      <tr class="both">
-                        <td> #{show $ fst line}
-                        <td> #
-                        <td> #
-                        <td>
-                            #{BL.unpack newLine}
-                    $of New newLine
-                      <tr class="addition">
-                        <td> #{show $ fst line}
-                        <td> #
-                        <td>+
-                        <td>
-                            #{BL.unpack newLine}
-                    $of Old oldLine
-                      <tr class="deletion">
-                        <td> #{show $ fst line}
-                        <td>-#
-                        <td> #
-                        <td>
-                            #{BL.unpack oldLine}
-            $of _
-              <p> #
+      <p>
+        $case hFileMode diffFile
+          $of NewMode m1
+            file created with mode: #{show m1}
+          $of OldMode m2
+            file deleted has mode: #{show m2}
+          $of ModifiedMode m1 m2
+            new mode: #{show m1} -> #{show m2}
+          $of UnModifiedMode m1
+            file's mode: #{show m1}
+
+      <p .#{identityDiffFile}>
+        $case hFileContent diffFile
+          $of NewBinaryFile
+            <table>
+              <tr class="addition">
+                <td>&lt;Binary file created&gt;
+          $of OldBinaryFile
+            <table>
+              <tr class="deletion">
+                <td>&lt;Binary file deleted&gt;
+          $of ModifiedBinaryFile
+            <table>
+              <tr class="deletion">
+                <td>&lt;Binary file modified&gt;
+          $of UnModifiedFile
+            <table>
+              <tr class="both">
+                <td>&lt;Unmodified file&gt;
+          $of NewTextFile lines
+            <table>
+              $forall line <- lines
+                <tr class="addition">
+                  <td> #
+                  <td>#{show $ lineNumber line}
+                  <td> #
+                  <td>+#
+                  <td>#{BL.unpack $ lineContent line}
+          $of OldTextFile lines
+            <table>
+              $forall line <- lines
+                <tr class="deletion">
+                  <td>#{show $ lineNumber line}
+                  <td> #
+                  <td>-#
+                  <td> #
+                  <td>#{BL.unpack $ lineContent line}
+          $of ModifiedFile lines
+            <table>
+              $forall line <- lines
+                $case line
+                  $of Old l
+                    <tr class="deletion">
+                      <td>#{show $ lineNumber l}
+                      <td> #
+                      <td>-#
+                      <td> #
+                      <td>#{BL.unpack $ lineContent l}
+                  $of New l
+                    <tr class="addition">
+                      <td> #
+                      <td>#{show $ lineNumber l}
+                      <td> #
+                      <td>+#
+                      <td>#{BL.unpack $ lineContent l}
+                  $of Both l1 l2
+                    <tr class="both">
+                      <td>#{show $ lineNumber l1}
+                      <td>#{show $ lineNumber l2}
+                      <td> #
+                      <td> #
+                      <td>#{BL.unpack $ lineContent l1}
