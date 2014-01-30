@@ -78,6 +78,7 @@ library
                  , fast-logger                   >= 2.1        && < 2.2
                  , wai-logger                    >= 2.1        && < 2.2
                  , system-filepath
+                 , system-fileio
                  , split
                  , time
                  , old-locale
