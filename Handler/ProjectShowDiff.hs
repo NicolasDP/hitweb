@@ -17,7 +17,7 @@ getProjectShowDiffR :: Text -> Text -> Text -> Handler Html
 getProjectShowDiffR projectName oldRef newRef = do
     extra <- getExtra
     defaultLayout $ do
-        setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
+        setTitle $ toHtml ("Hit - " `mappend` projectName)
         addScriptRemote "http://code.jquery.com/ui/1.10.4/jquery-ui.js"
         hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) projectName
         case hitProjectPath of

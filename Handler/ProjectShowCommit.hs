@@ -22,7 +22,7 @@ getProjectShowCommitR :: Text -> Text -> Handler Html
 getProjectShowCommitR projectName ref = do
     extra <- getExtra
     defaultLayout $ do
-        setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
+        setTitle $ toHtml ("Hit - " `mappend` projectName)
         hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) projectName
         case hitProjectPath of
             Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
