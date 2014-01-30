@@ -7,9 +7,9 @@
       <li>
         <a href=@{HomeR}>_{MsgNavHeaderHome}
       $case maid
-        $of Just userID
+        $of Just _
           <li>
-            <a href=@{AuthR LogoutR}>Logout (#{show $ unKey userID})
+            <a href=@{AuthR LogoutR}>Logout
         $of Nothing
           <li>
             <a href=@{AuthR LoginR}>Login
