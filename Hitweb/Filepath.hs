@@ -7,13 +7,10 @@ module Hitweb.Filepath
 
 import Prelude
 import Control.Applicative
-
 import Data.Git.Storage
-
-import Data.Text as T (Text)
-
-import Filesystem
-import Filesystem.Path as FSP
+import Data.Text                 as T (Text)
+import Filesystem                as FSP
+import Filesystem.Path           as FSP
 import Filesystem.Path.CurrentOS as FSP
 
 -- | for the hitweb projects directory (dir), return the path to the git
@@ -38,7 +35,7 @@ getProjectPath' dir projectName = do
         (False, True) -> Just path2
         _             -> Nothing
 
--- | list all of the current projects in this root directory
+-- | list all of the current projects in the given directory
 listProjectIn :: Text -> IO [Text]
 listProjectIn (FSP.fromText -> rootPath) =
     foldr f (return []) =<< listDirectory rootPath

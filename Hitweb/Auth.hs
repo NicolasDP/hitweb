@@ -5,16 +5,15 @@ module Hitweb.Auth
     ) where
 
 import Prelude
+import Hitweb.Filepath (getProjectPath)
+import Yesod           (AuthResult(..))
+import Yesod.Auth      ()
+import Data.Text       as T (Text, concat, lines)
+import Filesystem      as FSP
+import Filesystem.Path as FSP
 
-import Yesod (AuthResult(..))
-import Yesod.Auth
-
-import Data.Text as T (Text, concat, unpack, lines)
-import Data.Text.IO as T (readFile)
-import System.Directory (doesFileExist)
-
-projectAuthorizedFileName :: String
-projectAuthorizedFileName = ".hitweb.authorized"
+projectAuthorizedFileName :: FSP.FilePath
+projectAuthorizedFileName = "hitweb.authorized"
 
 -- | it is possible to allow access to only 'logged' users.
 -- then, write this line into the file 'projectAuthorizedFileName' to
@@ -26,9 +25,15 @@ projectAuthAnybody = "anybody"
 -- i.e.: check if the file 'projectAuthorizedFilename' exist for the
 -- 'projectName' in the directory 'dirPath'
 doesProjectRequiredAuth :: T.Text -> T.Text -> IO Bool
-doesProjectRequiredAuth dirPath projectName =
-    let authProjFile = (T.unpack dirPath) ++ "/" ++ (T.unpack projectName) ++ "/" ++ projectAuthorizedFileName
-    in  doesFileExist authProjFile
+doesProjectRequiredAuth dirPath projectName = do
+    pathMaybe <- getProjectPath dirPath projectName
+    case pathMaybe of
+        Nothing   -> return False
+        Just path -> do
+            putStrLn $ show $ path </> projectAuthorizedFileName
+            test <- isFile $ path </> projectAuthorizedFileName
+            putStrLn $ show test
+            return test
 
 -- | check if a user (userIdent) is allowed to access a project (projectName).
 doesUserIsAuthorized :: T.Text -> T.Text -> Maybe T.Text -> IO AuthResult
@@ -38,10 +43,16 @@ doesUserIsAuthorized _       _           Nothing          = return Authenticatio
 --    if he is in the list
 -- OR if the project (projectName) allows any logged user.
 doesUserIsAuthorized dirPath projectName (Just userIdent) = do
-    let authProjFile = (T.unpack dirPath) ++ "/" ++ (T.unpack projectName) ++ "/" ++ projectAuthorizedFileName
-    content <- T.readFile authProjFile
-    let contentLines = T.lines content
-    return $ userIsIn contentLines
-    where userIsIn :: [T.Text] -> AuthResult
-          userIsIn []        = Unauthorized $ T.concat [userIdent,": user not authorized to access project '",projectName,"'"]
-          userIsIn (line:xs) = if elem line [userIdent,projectAuthAnybody] then Authorized else userIsIn xs
+    pathMaybe <- getProjectPath dirPath projectName
+    case pathMaybe of
+        Nothing   -> return $ Unauthorized $ T.concat ["No project named: ", projectName]
+        Just path -> do
+            putStrLn $ show $ path </> projectAuthorizedFileName
+            contents <- FSP.readTextFile $ path </> projectAuthorizedFileName
+            let contentLines = T.lines contents
+            return $ userIsIn contentLines
+            where userIsIn :: [T.Text] -> AuthResult
+                  userIsIn []        =
+                      Unauthorized $ T.concat [userIdent,": user not authorized to access project '",projectName,"'"]
+                  userIsIn (line:xs) =
+                      if elem line [userIdent,projectAuthAnybody] then Authorized else userIsIn xs
