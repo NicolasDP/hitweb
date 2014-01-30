@@ -1,11 +1,14 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Handler.Project where
 
 import Import
 import Data.List as L (head, init, tail)
 import Data.List.Split as L (splitOn)
 import Data.Text as T (unpack, pack)
+import qualified Data.Text.Lazy as TL
+import qualified Data.Text.Lazy.Encoding as TL (decodeUtf8)
 
-import Yesod.Markdown
+import Cheapskate
 
 import Data.Git
 import Data.Git.Types
@@ -15,9 +18,7 @@ import Data.Git.Revision
 
 import Data.Time.Format
 import System.Locale
-
-import Data.ByteString.Char8 as BC (unpack)
-import Data.ByteString.Lazy.Char8 as BL
+import qualified Data.ByteString.Char8 as BC
 
 getLogList :: Revision -> Data.Git.Storage.Git -> IO [(Commit,Ref)]
 getLogList revision git = do
@@ -42,8 +43,8 @@ getReadmeContent rev git = do
             case contentMaybe of
                 Nothing      -> return Nothing
                 Just content ->
-                    let mdContent = Markdown $ T.pack $ BL.unpack $ oiData content
-                    in  return $ Just $ markdownToHtmlTrusted mdContent
+                    let mdContent = markdown def $ TL.toStrict $ TL.decodeUtf8 $ oiData content
+                    in  return $ Just $ toHtml mdContent
 
 -- This is the project summary handler.
 getProjectR :: Text -> Handler Html
@@ -53,7 +54,7 @@ getProjectR projectName  = do
         identityDescription <- newIdent
         identityLogList <- newIdent
         identityReadme <- newIdent
-        setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
+        setTitle $ toHtml ("Hit - " `mappend` projectName)
         hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) projectName
         case hitProjectPath of
             Nothing   -> error $ "No such project: " ++ (T.unpack projectName)

@@ -78,12 +78,13 @@ library
                  , fast-logger                   >= 2.1        && < 2.2
                  , wai-logger                    >= 2.1        && < 2.2
                  , system-filepath
+                 , system-fileio
                  , split
                  , time
                  , old-locale
                  , patience
                  , hit                           >= 0.5.4     && < 0.6.0
-                 , yesod-markdown
+                 , cheapskate
 
 executable         hitweb
     if flag(library-only)
