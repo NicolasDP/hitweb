@@ -5,7 +5,7 @@ import Data.List as L (head, init, tail)
 import Data.List.Split as L (splitOn)
 import Data.Text as T (unpack, pack)
 
-import Yesod.Markdown
+import Cheapskate
 
 import Data.Git
 import Data.Git.Types
@@ -42,8 +42,8 @@ getReadmeContent rev git = do
             case contentMaybe of
                 Nothing      -> return Nothing
                 Just content ->
-                    let mdContent = Markdown $ T.pack $ BL.unpack $ oiData content
-                    in  return $ Just $ markdownToHtmlTrusted mdContent
+                    let mdContent = markdown def $ T.pack $ BL.unpack $ oiData content
+                    in  return $ Just $ toHtml mdContent
 
 -- This is the project summary handler.
 getProjectR :: Text -> Handler Html
