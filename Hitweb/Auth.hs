@@ -30,10 +30,7 @@ doesProjectRequiredAuth dirPath projectName = do
     case pathMaybe of
         Nothing   -> return False
         Just path -> do
-            putStrLn $ show $ path </> projectAuthorizedFileName
-            test <- isFile $ path </> projectAuthorizedFileName
-            putStrLn $ show test
-            return test
+            isFile $ path </> projectAuthorizedFileName
 
 -- | check if a user (userIdent) is allowed to access a project (projectName).
 doesUserIsAuthorized :: T.Text -> T.Text -> Maybe T.Text -> IO AuthResult
