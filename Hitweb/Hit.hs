@@ -5,6 +5,8 @@ module Hitweb.Hit
     , HitwebFileContent(..)
     , TextLine(..)
     , hitwebDiff
+    , FilteredDiff(..)
+    , hitwebDiffGetContext
     ) where
 
 import Prelude
@@ -39,6 +41,45 @@ data HitwebFileContent = NewBinaryFile
                        | ModifiedBinaryFile
                        | ModifiedFile [Item TextLine]
                        | UnModifiedFile
+
+data FilteredDiff = NormalLine (Item TextLine) | Separator
+data HitwebAccu = AccuBottom | AccuTop
+
+startWithSeparator :: [FilteredDiff] -> Bool
+startWithSeparator [] = False
+startWithSeparator (Separator:_) = True
+startWithSeparator ((NormalLine l):xs) =
+    case l of
+        (Both _ _) -> startWithSeparator xs
+        _          -> False
+
+removeTrailingBoth :: [FilteredDiff] -> [FilteredDiff]
+removeTrailingBoth list =
+    let test = startWithSeparator list
+    in  if test then Prelude.tail $ Prelude.dropWhile (\a -> not $ startWithSeparator [a]) list
+                else list
+
+hitwebDiffGetContext :: Int -> [Item TextLine] -> [FilteredDiff]
+hitwebDiffGetContext 0 list = fmap NormalLine list
+hitwebDiffGetContext context list =
+    let (_, _, filteredDiff) = Prelude.foldr filterContext (0, AccuBottom, []) list
+        theList = removeTrailingBoth filteredDiff
+    in case Prelude.head theList of
+        (NormalLine (Both l1 _)) -> if (lineNumber l1) > 1 then Separator:theList
+                                                           else theList
+        _ -> theList
+    where filterContext :: (Item TextLine) -> (Int, HitwebAccu, [FilteredDiff]) -> (Int, HitwebAccu, [FilteredDiff])
+          filterContext (Both l1 l2) (c, AccuBottom, acc) =
+              if c < context then (c+1, AccuBottom, (NormalLine (Both l1 l2)):acc)
+                             else (c  , AccuBottom, (NormalLine (Both l1 l2))
+                                                    :((Prelude.take (context-1) acc)
+                                                    ++ [Separator]
+                                                    ++ (Prelude.drop (context+1) acc)))
+          filterContext (Both l1 l2) (c, AccuTop, acc) =
+              if c < context then (c+1, AccuTop   , (NormalLine (Both l1 l2)):acc)
+                             else (0  , AccuBottom, (NormalLine (Both l1 l2)):acc)
+          filterContext element (_, _, acc) =
+              (0, AccuTop, (NormalLine element):acc)
 
 data HitwebFileMode = NewMode        Int
                     | OldMode        Int

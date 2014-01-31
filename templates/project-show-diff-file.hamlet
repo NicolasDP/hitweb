@@ -74,26 +74,35 @@
                   <td>#{BL.unpack $ lineContent line}
           $of ModifiedFile lines
             <table>
-              $forall line <- lines
-                $case line
-                  $of Old l
-                    <tr class="deletion">
-                      <td>#{show $ lineNumber l}
-                      <td> #
-                      <td>-#
-                      <td> #
-                      <td>#{BL.unpack $ lineContent l}
-                  $of New l
-                    <tr class="addition">
-                      <td> #
-                      <td>#{show $ lineNumber l}
-                      <td> #
-                      <td>+#
-                      <td>#{BL.unpack $ lineContent l}
-                  $of Both l1 l2
-                    <tr class="both">
-                      <td>#{show $ lineNumber l1}
-                      <td>#{show $ lineNumber l2}
+              $forall fLine <- hitwebDiffGetContext 5 lines
+                $case fLine
+                  $of Separator
+                    <tr>
                       <td> #
                       <td> #
-                      <td>#{BL.unpack $ lineContent l1}
+                      <td> #
+                      <td> #
+                      <td> [...]
+                  $of NormalLine line
+                    $case line
+                      $of Old l
+                        <tr class="deletion">
+                          <td>#{show $ lineNumber l}
+                          <td> #
+                          <td>-#
+                          <td> #
+                          <td>#{BL.unpack $ lineContent l}
+                      $of New l
+                        <tr class="addition">
+                          <td> #
+                          <td>#{show $ lineNumber l}
+                          <td> #
+                          <td>+#
+                          <td>#{BL.unpack $ lineContent l}
+                      $of Both l1 l2
+                        <tr class="both">
+                          <td>#{show $ lineNumber l1}
+                          <td>#{show $ lineNumber l2}
+                          <td> #
+                          <td> #
+                          <td>#{BL.unpack $ lineContent l1}
