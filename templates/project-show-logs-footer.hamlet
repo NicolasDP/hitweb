@@ -1,0 +1,6 @@
+$case nextRef
+  $of Just r
+    <div align="right">
+      <a href=@{ProjectShowLogsR projectName (T.pack $ toHexString r) size}>
+        Next logs
+  $of Nothing

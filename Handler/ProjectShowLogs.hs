@@ -44,6 +44,16 @@ getProjectShowLogsR projectName ref size = do
               liftIO $ closeRepo git
     where --showCommits :: [(Ref, Commit)] -> IO ()
           showCommits [] = return ()
+          showCommits [(commitRef, commit)] = do
+              let message = L.splitOn "\n" $ BC.unpack $ commitMessage commit
+              let currentRef = T.pack $ toHexString commitRef
+              let nextRef = case commitParents commit of
+                                []   -> Nothing
+                                (p:_)-> Just p
+              commitHeaderId <- newIdent
+              commitId <- newIdent
+              $(widgetFile "project-show-commit")
+              $(widgetFile "project-show-logs-footer")
           showCommits ((commitRef, commit):xs) = do
               let message = L.splitOn "\n" $ BC.unpack $ commitMessage commit
               let currentRef = T.pack $ toHexString commitRef
