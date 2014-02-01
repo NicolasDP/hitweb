@@ -39,41 +39,41 @@
       <p .#{identityDiffFile}>
         $case hFileContent diffFile
           $of NewBinaryFile
-            <table>
+            <table .#{identityDiffFile}>
               <tr class="addition">
                 <td>&lt;Binary file created&gt;
           $of OldBinaryFile
-            <table>
+            <table .#{identityDiffFile}>
               <tr class="deletion">
                 <td>&lt;Binary file deleted&gt;
           $of ModifiedBinaryFile
-            <table>
+            <table .#{identityDiffFile}>
               <tr class="deletion">
                 <td>&lt;Binary file modified&gt;
           $of UnModifiedFile
-            <table>
+            <table .#{identityDiffFile}>
               <tr class="both">
                 <td>&lt;Unmodified file&gt;
           $of NewTextFile lines
-            <table>
+            <table .#{identityDiffFile}>
               $forall line <- lines
                 <tr class="addition">
                   <td> #
                   <td>#{show $ lineNumber line}
                   <td> #
                   <td>+#
-                  <td>#{BL.unpack $ lineContent line}
+                  <td .#{identityDiffFile}>#{BL.unpack $ lineContent line}
           $of OldTextFile lines
-            <table>
+            <table .#{identityDiffFile}>
               $forall line <- lines
                 <tr class="deletion">
                   <td>#{show $ lineNumber line}
                   <td> #
                   <td>-#
                   <td> #
-                  <td>#{BL.unpack $ lineContent line}
+                  <td .#{identityDiffFile}>#{BL.unpack $ lineContent line}
           $of ModifiedFile lines
-            <table>
+            <table .#{identityDiffFile}>
               $forall fLine <- hitwebDiffGetContext 5 lines
                 $case fLine
                   $of Separator
@@ -82,7 +82,7 @@
                       <td> #
                       <td> #
                       <td> #
-                      <td> [...]
+                      <td .#{identityDiffFile}> [...]
                   $of NormalLine line
                     $case line
                       $of Old l
@@ -91,18 +91,18 @@
                           <td> #
                           <td>-#
                           <td> #
-                          <td>#{BL.unpack $ lineContent l}
+                          <td .#{identityDiffFile}>#{BL.unpack $ lineContent l}
                       $of New l
                         <tr class="addition">
                           <td> #
                           <td>#{show $ lineNumber l}
                           <td> #
                           <td>+#
-                          <td>#{BL.unpack $ lineContent l}
+                          <td .#{identityDiffFile}>#{BL.unpack $ lineContent l}
                       $of Both l1 l2
                         <tr class="both">
                           <td>#{show $ lineNumber l1}
                           <td>#{show $ lineNumber l2}
                           <td> #
                           <td> #
-                          <td>#{BL.unpack $ lineContent l1}
+                          <td .#{identityDiffFile}>#{BL.unpack $ lineContent l1}

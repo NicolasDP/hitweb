@@ -21,6 +21,7 @@ getProjectShowBlobR projectName ref = do
         identityTree <- newIdent
         setTitle $ toHtml ("Hit - " `mappend` projectName)
         hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) projectName
+        $(widgetFile "project-show-menu")
         case hitProjectPath of
             Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
             Just path -> do

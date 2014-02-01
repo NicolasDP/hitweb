@@ -1,0 +1,17 @@
+th.#{commitHeaderId}
+{
+  text-align: left;
+}
+
+div.#{commitHeaderId}
+{
+  margin-left: 25px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+div.#{commitId}:hover
+{
+  background-color: #E0E3FD;
+  border-radius: 5px;
+}

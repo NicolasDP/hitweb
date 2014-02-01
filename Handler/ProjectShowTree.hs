@@ -4,6 +4,8 @@ import Import
 
 import Data.Git
 import Data.Git.Ref
+import Data.Git.Storage
+import Data.Git.Revision
 import Data.Git.Repository
 import Data.Text as T (pack,unpack)
 
@@ -23,9 +25,17 @@ getProjectShowTreeR projectName ref = do
         identityTree <- newIdent
         setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
         hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) projectName
+        $(widgetFile "project-show-menu")
         case hitProjectPath of
             Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
             Just path -> do
+                let stringRef = T.unpack ref
+                git <- liftIO $ openRepo path
+                newRef <- if (isHexString stringRef)
+                              then return $ fromHexString stringRef
+                              else let revision = fromString stringRef
+                                   in liftIO $ maybe (error "revision cannot be found") id <$> resolveRevision git revision
                 let identityNew = T.unpack identityTree
-                treeList <- liftIO $ withRepo path $ myGetTreeMaybe $ fromHexString $ T.unpack ref
+                treeList <- liftIO $ myGetTreeMaybe newRef git
                 $(widgetFile "project-show-tree")
+                liftIO $ closeRepo git

@@ -94,6 +94,7 @@ instance Yesod App where
                 [ css_normalize_css
                 , css_bootstrap_css
                 ])
+            addScriptRemote "http://code.jquery.com/ui/1.10.4/jquery-ui.js"
             $(widgetFile "default-head")
             $(widgetFile "default-layout")
         giveUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")

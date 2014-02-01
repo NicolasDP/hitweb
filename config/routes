@@ -10,3 +10,4 @@
 /project/#Text/diff/#Text/with/#Text ProjectShowDiffR GET
 /project/#Text/tree/#Text ProjectShowTreeR GET
 /project/#Text/blob/#Text ProjectShowBlobR GET
+/project/#Text/logs/#Text/size/#Integer ProjectShowLogsR GET

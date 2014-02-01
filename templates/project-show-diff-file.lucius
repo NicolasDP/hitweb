@@ -32,4 +32,15 @@ tr.both:hover {
 
 p.#{identityDiffFile}
 {
+  display: block;
+}
+
+table.#{identityDiffFile}
+{
+  width:100%;
+}
+
+td.#{identityDiffFile}
+{
+  width:100%;
 }
