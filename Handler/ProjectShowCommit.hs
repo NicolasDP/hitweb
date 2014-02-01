@@ -23,6 +23,7 @@ myGetCommit ref git = getCommitMaybe git ref
 
 getProjectShowCommitR :: Text -> Text -> Handler Html
 getProjectShowCommitR projectName ref = do
+    let currentRef = ref
     extra <- getExtra
     defaultLayout $ do
         setTitle $ toHtml ("Hit - " `mappend` projectName)

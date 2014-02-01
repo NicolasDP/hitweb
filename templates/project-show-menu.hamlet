@@ -4,13 +4,13 @@
       #{projectName}
 
 <div class="project-menu">
-  <ul>
-    <li>
+  <ul class="project-menu">
+    <li class="project-menu">
       <a href=@{ProjectR projectName}>
-        #{projectName}
-    <li>
+        Summary
+    <li class="project-menu">
       <a href=@{ProjectShowLogsR projectName "HEAD" 20}>
         Commits
-    <li>
+    <li class="project-menu">
       <a href=@{ProjectShowTreeR projectName "HEAD"}>
         Tree

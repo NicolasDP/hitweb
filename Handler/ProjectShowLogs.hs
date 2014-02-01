@@ -15,13 +15,13 @@ import Data.Time.Format
 
 import System.Locale
 
-myGetCommitList :: Ref -> Integer -> Git -> IO [Commit]
+myGetCommitList :: Ref -> Integer -> Git -> IO [(Ref, Commit)]
 myGetCommitList _   0 _   = return []
 myGetCommitList ref i git = do
     commit <- getCommit git ref
     case commitParents commit of
-        []    -> return [commit]
-        (p:_) -> (commit:) <$> (myGetCommitList p (i-1) git)
+        []    -> return [(ref, commit)]
+        (p:_) -> ((ref, commit):) <$> (myGetCommitList p (i-1) git)
 
 getProjectShowLogsR :: Text -> Text -> Integer -> Handler Html
 getProjectShowLogsR projectName ref size = do
@@ -42,10 +42,11 @@ getProjectShowLogsR projectName ref size = do
               commitList <- liftIO $ myGetCommitList newRef size git
               showCommits commitList
               liftIO $ closeRepo git
-    where --showCommits :: [Commit] -> IO ()
+    where --showCommits :: [(Ref, Commit)] -> IO ()
           showCommits [] = return ()
-          showCommits (commit:xs) = do
+          showCommits ((commitRef, commit):xs) = do
               let message = L.splitOn "\n" $ BC.unpack $ commitMessage commit
+              let currentRef = T.pack $ toHexString commitRef
               commitHeaderId <- newIdent
               commitId <- newIdent
               $(widgetFile "project-show-commit")

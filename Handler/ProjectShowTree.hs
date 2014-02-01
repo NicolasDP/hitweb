@@ -13,7 +13,7 @@ import Data.ByteString.Char8 as BC (unpack)
 
 myGetTreeMaybe :: Ref -> Git -> IO HTree
 myGetTreeMaybe ref git = do
-    tree <- getTreeMaybe git ref
+    tree <- resolveTreeish git ref
     case tree of
         Just t  -> buildHTree git t
         Nothing -> return []
@@ -34,7 +34,7 @@ getProjectShowTreeR projectName ref = do
                 newRef <- if (isHexString stringRef)
                               then return $ fromHexString stringRef
                               else let revision = fromString stringRef
-                                   in liftIO $ maybe (error "revision cannot be found") id <$> resolveRevision git revision
+                                   in  liftIO $ maybe (error "revision cannot be found") id <$> resolveRevision git revision
                 let identityNew = T.unpack identityTree
                 treeList <- liftIO $ myGetTreeMaybe newRef git
                 $(widgetFile "project-show-tree")

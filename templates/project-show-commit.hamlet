@@ -13,8 +13,8 @@
     <tr>
       <th .#{commitHeaderId}>commit
       <td>
-        <a href=@{ProjectShowCommitR projectName ref}>
-          #{ref}
+        <a href=@{ProjectShowCommitR projectName currentRef}>
+          #{currentRef}
     <tr>
       <th .#{commitHeaderId}>tree
       <td>
@@ -28,7 +28,7 @@
             #{toHexString parent}
         <td>
           (
-          <a href=@{ProjectShowDiffR projectName (T.pack $ toHexString parent) ref}>
+          <a href=@{ProjectShowDiffR projectName (T.pack $ toHexString parent) currentRef}>
             Diff
           )
 
