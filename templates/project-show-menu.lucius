@@ -1,0 +1,17 @@
+div.project-menu
+{
+  display: block;
+}
+
+ul.project-menu
+{
+  display: block;
+  list-style-type: none;
+  margin: 0px;
+  margin-bottom: 20px;
+}
+
+li.project-menu
+{
+  display: inline-block;
+}
