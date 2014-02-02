@@ -2,6 +2,10 @@
   <script language="javascript">
     var tmpVar = new Array ();
   <table .#{commitId}>
+      <tr .#{commitId}>
+        <th .#{commitId}>Date
+        <th .#{commitId}>Message
+        <th .#{commitId}>Author
     $forall (currentRef, commit) <- commitList
       <tr .#{commitId} id=#{(toHexString currentRef) ++ "-target"}>
         <td .#{commitId}>
@@ -32,3 +36,11 @@
                 tmpVar["#{toHexString currentRef}"] = "table-row";
               }
           });
+
+<div .#{commitId} align="right">
+  $if not $ L.null commitList
+   $if not $ L.null $ commitParents $ snd $ L.last commitList
+    $case L.head $ commitParents $ snd $ L.last commitList
+     $of p
+      <a href=@{ProjectShowLogsR projectName (T.pack $ toHexString p) size}>
+        Next logs

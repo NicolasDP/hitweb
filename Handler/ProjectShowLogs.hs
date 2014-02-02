@@ -7,7 +7,7 @@ import Data.Git.Storage
 import Data.Git.Ref
 import Data.Git.Types
 import Data.Git.Revision
-import Data.List as L (head, tail, null)
+import Data.List as L (head, tail, null, last)
 import Data.List.Split as L (splitOn)
 import Data.Text as T (pack,unpack)
 import Data.ByteString.Char8 as BC
