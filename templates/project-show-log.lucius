@@ -1,0 +1,16 @@
+td.#{commitId}
+{
+  padding: 0.1em 0.5em 0.1em 0.5em;
+  text-align:left;
+  white-space: nowrap;
+}
+tr.#{commitId}:hover
+{
+  background-color: #E0E3FD;
+  border-radius: 5px;
+}
+
+table.#{commitId}
+{
+  width:100%;
+}

@@ -7,7 +7,7 @@ import Data.Git.Storage
 import Data.Git.Ref
 import Data.Git.Types
 import Data.Git.Revision
-import Data.List as L (head, tail)
+import Data.List as L (head, tail, null)
 import Data.List.Split as L (splitOn)
 import Data.Text as T (pack,unpack)
 import Data.ByteString.Char8 as BC
@@ -40,24 +40,6 @@ getProjectShowLogsR projectName ref size = do
                             else let revision = fromString stringRef
                                  in liftIO $ maybe (error "revision cannot be found") id <$> resolveRevision git revision
               commitList <- liftIO $ myGetCommitList newRef size git
-              showCommits commitList
+              commitId <- newIdent
+              $(widgetFile "project-show-log")
               liftIO $ closeRepo git
-    where --showCommits :: [(Ref, Commit)] -> IO ()
-          showCommits [] = return ()
-          showCommits [(commitRef, commit)] = do
-              let message = L.splitOn "\n" $ BC.unpack $ commitMessage commit
-              let currentRef = T.pack $ toHexString commitRef
-              let nextRef = case commitParents commit of
-                                []   -> Nothing
-                                (p:_)-> Just p
-              commitHeaderId <- newIdent
-              commitId <- newIdent
-              $(widgetFile "project-show-commit")
-              $(widgetFile "project-show-logs-footer")
-          showCommits ((commitRef, commit):xs) = do
-              let message = L.splitOn "\n" $ BC.unpack $ commitMessage commit
-              let currentRef = T.pack $ toHexString commitRef
-              commitHeaderId <- newIdent
-              commitId <- newIdent
-              $(widgetFile "project-show-commit")
-              showCommits xs

@@ -1,0 +1,34 @@
+<div .#{commitId}>
+  <script language="javascript">
+    var tmpVar = new Array ();
+  <table .#{commitId}>
+    $forall (currentRef, commit) <- commitList
+      <tr .#{commitId} id=#{(toHexString currentRef) ++ "-target"}>
+        <td .#{commitId}>
+          #{formatTime defaultTimeLocale "%F %T" $ toZonedTime $ personTime $ commitAuthor commit}
+        <td .#{commitId}>
+          <a href=@{ProjectShowCommitR projectName $ T.pack $ toHexString currentRef}>
+            #{L.head $ L.splitOn "\n" $ BC.unpack $ commitMessage commit}
+        <td .#{commitId}>
+            #{BC.unpack $ personName $ commitAuthor commit}
+      $if not $ L.null $ L.tail $ L.splitOn "\n" $ BC.unpack $ commitMessage commit
+        <tr .#{commitId} id=#{(toHexString currentRef) ++ "-hidden"} style="display: none">
+          <td .#{commitId}> #
+          <td .#{commitId}>
+            $forall line <- L.tail $ L.splitOn "\n" $ BC.unpack $ commitMessage commit
+              #{line}
+              <br />
+          <td .#{commitId}> #
+        <script language="javascript">
+          tmpVar["#{toHexString currentRef}"] = "table-row";
+          \$( "\##{(toHexString currentRef) ++ "-target"}" ).click(function () {
+            \$( "\##{(toHexString currentRef) ++ "-hidden"}").css("display",tmpVar["#{toHexString currentRef}"]);
+            if (tmpVar["#{toHexString currentRef}"] == "table-row")
+              {
+                tmpVar["#{toHexString currentRef}"] = "none";
+              }
+            else
+              {
+                tmpVar["#{toHexString currentRef}"] = "table-row";
+              }
+          });
