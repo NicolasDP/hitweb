@@ -1,15 +1,15 @@
-<header>
-  <div id="header_title">
-    <h1>
-      <a href="@{HomeR}">HitWeb
-  <nav>
-    <ul>
-      <li>
-        <a href=@{HomeR}>_{MsgNavHeaderHome}
+<header .#{headerIdentity}>
+  <div .#{headerIdentity}>
+    <h1 .#{headerIdentity}>
+      <a .#{headerIdentity} href="@{HomeR}">HitWeb
+  <nav .#{headerIdentity}>
+    <ul .#{headerIdentity}>
+      <li .#{headerIdentity}>
+        <a .#{headerIdentity} href=@{HomeR}>_{MsgNavHeaderHome}
       $case maid
         $of Just _
-          <li>
-            <a href=@{AuthR LogoutR}>Logout
+          <li .#{headerIdentity}>
+            <a .#{headerIdentity} href=@{AuthR LogoutR}>Logout
         $of Nothing
-          <li>
-            <a href=@{AuthR LoginR}>Login
+          <li .#{headerIdentity}>
+            <a .#{headerIdentity} href=@{AuthR LoginR}>Login
