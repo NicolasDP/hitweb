@@ -82,22 +82,25 @@ instance Yesod App where
         master <- getYesod
         mmsg <- getMessage
         maid <- maybeAuthId
-        headerIdentity <- newIdent
+        headerId <- newIdent
+        headerCtxId <- newIdent
+        headerCtxHomId <- newIdent
+        headerCtxNavId <- newIdent
+        mainIdentity <- newIdent
 
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
         -- default-layout-wrapper is the entire page. Since the final
         -- value passed to hamletToRepHtml cannot be a widget, this allows
         -- you to use normal widget features in default-layout.
-
         pc <- widgetToPageContent $ do
             $(combineStylesheets 'StaticR
                 [ css_normalize_css
-                , css_bootstrap_css
                 ])
             addScriptRemote "http://code.jquery.com/ui/1.10.4/jquery-ui.js"
             $(widgetFile "default-head")
             $(widgetFile "default-layout")
+
         giveUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
     -- This is done to provide an optimization for serving static files from

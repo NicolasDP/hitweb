@@ -3,7 +3,7 @@ Default: &defaults
   port: 3000
   approot: "http://localhost:3000"
   copyright: Copyright 2014 - Nicolas DI PRIMA <nicolas@di-prima.fr>
-  projects-directory: /build/perso
+  projects-directory: /home/nicolas/work
   #analytics: UA-YOURCODE
 
 Development:

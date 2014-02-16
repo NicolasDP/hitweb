@@ -1,15 +1,20 @@
-<header .#{headerIdentity}>
-  <div .#{headerIdentity}>
-    <h1 .#{headerIdentity}>
-      <a .#{headerIdentity} href="@{HomeR}">HitWeb
-  <nav .#{headerIdentity}>
-    <ul .#{headerIdentity}>
-      <li .#{headerIdentity}>
-        <a .#{headerIdentity} href=@{HomeR}>_{MsgNavHeaderHome}
-      $case maid
-        $of Just _
-          <li .#{headerIdentity}>
-            <a .#{headerIdentity} href=@{AuthR LogoutR}>Logout
-        $of Nothing
-          <li .#{headerIdentity}>
-            <a .#{headerIdentity} href=@{AuthR LoginR}>Login
+<header .#{headerId}>
+  <div .#{headerCtxId}>
+    <div .#{headerCtxHomId}>
+      <a .#{headerCtxId} href="@{HomeR}">HitWeb
+    <nav .#{headerCtxNavId}>
+      <ul .#{headerCtxNavId}>
+        <li .#{headerCtxNavId}>
+          <a .#{headerCtxId} href=@{HomeR}>
+            Projects
+        $case maid
+          $of Just _
+            <li .#{headerCtxNavId}>
+              <a .#{headerCtxId} href="#">Name?
+            <li .#{headerCtxNavId}>
+              <a .#{headerCtxId} href="#">Settings
+            <li .#{headerCtxNavId}>
+              <a .#{headerCtxId} href=@{AuthR LogoutR}>Logout
+          $of Nothing
+            <li .#{headerCtxNavId}>
+              <a .#{headerCtxId} href=@{AuthR LoginR}>Login
