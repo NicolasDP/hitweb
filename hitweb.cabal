@@ -28,7 +28,6 @@ library
                      Handler.ProjectShowLogs
                      Hitweb.Auth
                      Hitweb.Filepath
-                     Hitweb.Hit
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -85,7 +84,7 @@ library
                  , time
                  , old-locale
                  , patience
-                 , hit                           >= 0.5.4     && < 0.6.0
+                 , hit                           >= 0.5.5     && < 0.6.0
                  , cheapskate
 
 executable         hitweb

@@ -38,7 +38,7 @@ getProjectShowCommitR projectName ref = do
                                       commitHeaderId <- newIdent
                                       commitId <- newIdent
                                       $(widgetFile "project-show-commit")
-                                      diffList <- liftIO $ withRepo path $ getDiffWith hitwebDiff [] (L.head $ commitParents commit) (fromHexString $ T.unpack ref)
+                                      diffList <- liftIO $ withRepo path $ getDiff (L.head $ commitParents commit) (fromHexString $ T.unpack ref)
                                       identityDiffFile <- newIdent
                                       $(widgetFile "project-show-diff-file")
                     Nothing     -> error $ "Ref \"" ++ (T.unpack ref) ++ "\" unknown for project: " ++ (T.unpack projectName)

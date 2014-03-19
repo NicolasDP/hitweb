@@ -74,7 +74,7 @@
                   <td .#{identityDiffFile}>#{BL.unpack $ lineContent line}
           $of ModifiedFile lines
             <table .#{identityDiffFile}>
-              $forall fLine <- hitwebDiffGetContext 5 lines
+              $forall fLine <- lines
                 $case fLine
                   $of Separator
                     <tr>
