@@ -63,9 +63,12 @@ checkAuthorization projectName = do
         checkUserAuth :: T.Text -> HandlerT App IO AuthResult
         checkUserAuth dirPath = do
             mId <- maybeAuth
-            liftIO $ case mId of
-                Nothing           -> doesUserIsAuthorized dirPath projectName Nothing
-                Just (Entity _ n) -> doesUserIsAuthorized dirPath projectName $ Just $ userIdent n
+            case mId of
+                Nothing           -> liftIO $ doesUserIsAuthorized dirPath projectName Nothing
+                Just (Entity _ n) -> do
+                    case identityStatus n of
+                        Nothing -> redirect UserCreationR
+                        Just _ -> liftIO $ doesUserIsAuthorized dirPath projectName $ Just n
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
@@ -81,12 +84,16 @@ instance Yesod App where
     defaultLayout widget = do
         master <- getYesod
         mmsg <- getMessage
-        maid <- maybeAuthId
+
+        maid <- maybeAuth
+        person <- getUser maid
+
         headerId <- newIdent
         headerCtxId <- newIdent
         headerCtxHomId <- newIdent
         headerCtxNavId <- newIdent
         mainIdentity <- newIdent
+        messageIdentity <- newIdent
 
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
@@ -102,6 +109,13 @@ instance Yesod App where
             $(widgetFile "default-layout")
 
         giveUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
+        where
+          getUser (Just (Entity _ i)) = do
+              case identityUserInfo i of
+                  Nothing -> return Nothing
+                  (Just k) -> runDB $ get k
+          getUser _  = return Nothing
+
 
     -- This is done to provide an optimization for serving static files from
     -- a separate domain. Please see the staticRoot setting in Settings.hs
@@ -148,7 +162,7 @@ instance YesodPersistRunner App where
     getDBRunner = defaultGetDBRunner connPool
 
 instance YesodAuth App where
-    type AuthId App = UserId
+    type AuthId App = IdentityId
 
     -- Where to send a user after successful login
     loginDest _ = HomeR
@@ -156,11 +170,11 @@ instance YesodAuth App where
     logoutDest _ = HomeR
 
     getAuthId creds = runDB $ do
-        x <- getBy $ UniqueUser $ credsIdent creds
+        x <- getBy $ UniqueIdentity $ credsIdent creds
         case x of
             Just (Entity uid _) -> return $ Just uid
             Nothing -> do
-                fmap Just $ insert $ User (credsIdent creds) Nothing
+                fmap Just $ insert $ Identity (credsIdent creds) Nothing Nothing Nothing
 
     -- You can add other plugins like BrowserID, email or OAuth here
     authPlugins _ = [authBrowserId def, authGoogleEmail]

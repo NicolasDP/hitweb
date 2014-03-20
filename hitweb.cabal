@@ -26,6 +26,7 @@ library
                      Handler.ProjectShowTree
                      Handler.ProjectShowBlob
                      Handler.ProjectShowLogs
+                     Handler.UserCreation
                      Hitweb.Auth
                      Hitweb.Filepath
 

@@ -12,6 +12,8 @@ import Data.Text       as T (Text, concat, lines)
 import Filesystem      as FSP
 import Filesystem.Path as FSP
 
+import Model
+
 projectAuthorizedFileName :: FSP.FilePath
 projectAuthorizedFileName = "hitweb.authorized"
 
@@ -33,13 +35,13 @@ doesProjectRequiredAuth dirPath projectName = do
             isFile $ path </> projectAuthorizedFileName
 
 -- | check if a user (userIdent) is allowed to access a project (projectName).
-doesUserIsAuthorized :: T.Text -> T.Text -> Maybe T.Text -> IO AuthResult
+doesUserIsAuthorized :: T.Text -> T.Text -> Maybe Identity -> IO AuthResult
 -- | If a user is not logged (Nothing) then he should.
 doesUserIsAuthorized _       _           Nothing          = return AuthenticationRequired
 -- | If a user is logged (Just userIdent) then we check
 --    if he is in the list
 -- OR if the project (projectName) allows any logged user.
-doesUserIsAuthorized dirPath projectName (Just userIdent) = do
+doesUserIsAuthorized dirPath projectName (Just user) = do
     pathMaybe <- getProjectPath dirPath projectName
     case pathMaybe of
         Nothing   -> return $ Unauthorized $ T.concat ["No project named: ", projectName]
@@ -48,8 +50,8 @@ doesUserIsAuthorized dirPath projectName (Just userIdent) = do
             contents <- FSP.readTextFile $ path </> projectAuthorizedFileName
             let contentLines = T.lines contents
             return $ userIsIn contentLines
-            where userIsIn :: [T.Text] -> AuthResult
-                  userIsIn []        =
-                      Unauthorized $ T.concat [userIdent,": user not authorized to access project '",projectName,"'"]
-                  userIsIn (line:xs) =
-                      if elem line [userIdent,projectAuthAnybody] then Authorized else userIsIn xs
+    where userIsIn :: [T.Text] -> AuthResult
+          userIsIn []        =
+              Unauthorized $ T.concat [identityIdent user,": user not authorized to access project '",projectName,"'"]
+          userIsIn (line:xs) =
+              if elem line [identityIdent user,projectAuthAnybody] then Authorized else userIsIn xs

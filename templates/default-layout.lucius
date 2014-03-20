@@ -9,6 +9,15 @@ body
   margin:auto;
 }
 
+div.#{messageIdentity}
+{
+  text-align: center;
+  padding: 3px;
+  background: #6F9175;
+  color: #BABABA;
+  font-size: 1.3em;
+}
+
 /* Footer */
 
 footer {

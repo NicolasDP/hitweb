@@ -4,13 +4,11 @@
       <a .#{headerCtxId} href="@{HomeR}">HitWeb
     <nav .#{headerCtxNavId}>
       <ul .#{headerCtxNavId}>
-        <li .#{headerCtxNavId}>
-          <a .#{headerCtxId} href=@{HomeR}>
-            Projects
-        $case maid
-          $of Just _
+        $case person
+          $of Just user
             <li .#{headerCtxNavId}>
-              <a .#{headerCtxId} href="#">Name?
+              <a .#{headerCtxId} href="#">
+                #{userLogin user}
             <li .#{headerCtxNavId}>
               <a .#{headerCtxId} href="#">Settings
             <li .#{headerCtxNavId}>
