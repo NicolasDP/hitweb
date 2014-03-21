@@ -12,12 +12,12 @@ import Data.Text as T
 import Data.ByteString.Char8 as BC (unpack)
 import Data.ByteString.Lazy.Char8 as BL (unpack)
 
-getProjectShowDiffR :: Text -> Text -> Text -> Handler Html
-getProjectShowDiffR projectName oldRef newRef = do
+getProjectShowDiffR :: Text -> Text -> Text -> Text -> Handler Html
+getProjectShowDiffR login projectName oldRef newRef = do
     extra <- getExtra
     defaultLayout $ do
         setTitle $ toHtml ("Hit - " `mappend` projectName)
-        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) projectName
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projectName
         $(widgetFile "project-show-menu")
         case hitProjectPath of
             Nothing   -> error $ "No such project: " ++ (T.unpack projectName)

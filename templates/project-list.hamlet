@@ -1,0 +1,11 @@
+<h2>_{MsgHomePageH1Projects}
+
+$if Import.null projectsList
+  <p>No projects
+$else
+  <p>
+    <ul>
+      $forall projectEl <- projectsList
+        <li> Repo: #
+          <a href=@{ProjectR login projectEl}>
+            #{projectEl}

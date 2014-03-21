@@ -26,23 +26,23 @@ projectAuthAnybody = "anybody"
 -- | check if a project required any authorization
 -- i.e.: check if the file 'projectAuthorizedFilename' exist for the
 -- 'projectName' in the directory 'dirPath'
-doesProjectRequiredAuth :: T.Text -> T.Text -> IO Bool
-doesProjectRequiredAuth dirPath projectName = do
-    pathMaybe <- getProjectPath dirPath projectName
+doesProjectRequiredAuth :: T.Text -> T.Text -> T.Text -> IO Bool
+doesProjectRequiredAuth dirPath login projectName = do
+    pathMaybe <- getProjectPath dirPath login projectName
     case pathMaybe of
         Nothing   -> return False
         Just path -> do
             isFile $ path </> projectAuthorizedFileName
 
 -- | check if a user (userIdent) is allowed to access a project (projectName).
-doesUserIsAuthorized :: T.Text -> T.Text -> Maybe Identity -> IO AuthResult
+doesUserIsAuthorized :: T.Text -> T.Text -> T.Text -> Maybe Identity -> IO AuthResult
 -- | If a user is not logged (Nothing) then he should.
-doesUserIsAuthorized _       _           Nothing          = return AuthenticationRequired
+doesUserIsAuthorized _       _           _     Nothing          = return AuthenticationRequired
 -- | If a user is logged (Just userIdent) then we check
 --    if he is in the list
 -- OR if the project (projectName) allows any logged user.
-doesUserIsAuthorized dirPath projectName (Just user) = do
-    pathMaybe <- getProjectPath dirPath projectName
+doesUserIsAuthorized dirPath login projectName (Just user) = do
+    pathMaybe <- getProjectPath dirPath login projectName
     case pathMaybe of
         Nothing   -> return $ Unauthorized $ T.concat ["No project named: ", projectName]
         Just path -> do

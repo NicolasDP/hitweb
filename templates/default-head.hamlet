@@ -7,7 +7,7 @@
         $case person
           $of Just user
             <li .#{headerCtxNavId}>
-              <a .#{headerCtxId} href="#">
+              <a .#{headerCtxId} href=@{UserMainPageR $ userLogin user}>
                 #{userLogin user}
             <li .#{headerCtxNavId}>
               <a .#{headerCtxId} href="#">Settings

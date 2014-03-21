@@ -7,22 +7,22 @@
         $case hFileRef diffFile
           $of NewRef r1
             New file: #
-            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r1}>
+            <a href=@{ProjectShowBlobR login projectName $ T.pack $ toHexString r1}>
               #{toHexString r1}
           $of OldRef r2
             Deleted file: #
-            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r2}>
+            <a href=@{ProjectShowBlobR login projectName $ T.pack $ toHexString r2}>
               #{toHexString r2}
           $of ModifiedRef r1 r2
             Diff #
-            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r1}>
+            <a href=@{ProjectShowBlobR login projectName $ T.pack $ toHexString r1}>
               #{toHexString r1}
             ..
-            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r2}>
+            <a href=@{ProjectShowBlobR login projectName $ T.pack $ toHexString r2}>
               #{toHexString r2}
           $of UnModifiedRef r1
             Ref #
-            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString r1}>
+            <a href=@{ProjectShowBlobR login projectName $ T.pack $ toHexString r1}>
               #{toHexString r1}
 
       <p>

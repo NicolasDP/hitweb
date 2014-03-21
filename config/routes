@@ -5,10 +5,11 @@
 /robots.txt RobotsR GET
 
 / HomeR GET
-/project/#Text ProjectR GET
-/project/#Text/commit/#Text ProjectShowCommitR GET
-/project/#Text/diff/#Text/with/#Text ProjectShowDiffR GET
-/project/#Text/tree/#Text ProjectShowTreeR GET
-/project/#Text/blob/#Text ProjectShowBlobR GET
-/project/#Text/logs/#Text/size/#Integer ProjectShowLogsR GET
+/project/#Text UserMainPageR GET POST
+/project/#Text/#Text ProjectR GET
+/project/#Text/#Text/commit/#Text ProjectShowCommitR GET
+/project/#Text/#Text/diff/#Text/with/#Text ProjectShowDiffR GET
+/project/#Text/#Text/tree/#Text ProjectShowTreeR GET
+/project/#Text/#Text/blob/#Text ProjectShowBlobR GET
+/project/#Text/#Text/logs/#Text/size/#Integer ProjectShowLogsR GET
 /user/create UserCreationR GET POST

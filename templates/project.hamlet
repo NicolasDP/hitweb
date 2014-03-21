@@ -21,7 +21,7 @@
         <td .#{identityLogList}>
           #{formatTime defaultTimeLocale "%F %T" $ toZonedTime $ personTime $ commitAuthor $ fst commit}
         <td .#{identityLogList}>
-          <a href=@{ProjectShowCommitR projectName $ T.pack $ show $ snd commit}>
+          <a href=@{ProjectShowCommitR login projectName $ T.pack $ show $ snd commit}>
             <b>#{L.head $ L.splitOn "\n" $ BC.unpack $ commitMessage $ fst commit}...
         <td .#{identityLogList}>
           <i>#{L.tail $ L.init $ show $ personName $ commitAuthor $ fst commit}

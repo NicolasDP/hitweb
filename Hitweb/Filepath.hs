@@ -19,14 +19,15 @@ import Filesystem.Path.CurrentOS as FSP
 --   Just git/projectName/.git (is a git directory)
 --   Nothing
 --
-getProjectPath :: Text -> Text -> IO (Maybe FSP.FilePath)
+getProjectPath :: Text -> Text -> Text -> IO (Maybe FSP.FilePath)
 getProjectPath (FSP.fromText -> dir)
+               (FSP.fromText -> login)
                (FSP.fromText -> projectName) =
-    getProjectPath' dir projectName
+    getProjectPath' dir login projectName
 
-getProjectPath' :: FSP.FilePath -> FSP.FilePath -> IO (Maybe FSP.FilePath)
-getProjectPath' dir projectName = do
-    let path1 = dir </> projectName
+getProjectPath' :: FSP.FilePath -> FSP.FilePath -> FSP.FilePath -> IO (Maybe FSP.FilePath)
+getProjectPath' dir login projectName = do
+    let path1 = dir </> login </> projectName
     let path2 = path1 </> ".git"
     isGitProj1 <- isRepo path1
     isGitProj2 <- isRepo path2
@@ -36,12 +37,13 @@ getProjectPath' dir projectName = do
         _             -> Nothing
 
 -- | list all of the current projects in the given directory
-listProjectIn :: Text -> IO [Text]
-listProjectIn (FSP.fromText -> rootPath) =
-    foldr f (return []) =<< listDirectory rootPath
+listProjectIn :: Text -> Text -> IO [Text]
+listProjectIn (FSP.fromText -> rootPath)
+              (FSP.fromText -> login) =
+    foldr f (return []) =<< (listDirectory $ rootPath </> login)
   where f :: FSP.FilePath -> IO [Text] -> IO [Text]
         f t accu = do
-            pathMaybe <- getProjectPath' rootPath t
+            pathMaybe <- getProjectPath' rootPath login t
             case pathMaybe of
                 Just _  -> (either id id (FSP.toText $ FSP.filename t):) <$> accu
                 Nothing -> accu

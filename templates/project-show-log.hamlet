@@ -11,7 +11,7 @@
         <td .#{commitId}>
           #{formatTime defaultTimeLocale "%F %T" $ toZonedTime $ personTime $ commitAuthor commit}
         <td .#{commitId}>
-          <a href=@{ProjectShowCommitR projectName $ T.pack $ toHexString currentRef}>
+          <a href=@{ProjectShowCommitR login projectName $ T.pack $ toHexString currentRef}>
             #{L.head $ L.splitOn "\n" $ BC.unpack $ commitMessage commit}
         <td .#{commitId}>
             #{BC.unpack $ personName $ commitAuthor commit}
@@ -42,5 +42,5 @@
    $if not $ L.null $ commitParents $ snd $ L.last commitList
     $case L.head $ commitParents $ snd $ L.last commitList
      $of p
-      <a href=@{ProjectShowLogsR projectName (T.pack $ toHexString p) size}>
+      <a href=@{ProjectShowLogsR login projectName (T.pack $ toHexString p) size}>
         Next logs

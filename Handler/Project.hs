@@ -47,15 +47,15 @@ getReadmeContent rev git = do
                     in  return $ Just $ toHtml mdContent
 
 -- This is the project summary handler.
-getProjectR :: Text -> Handler Html
-getProjectR projectName  = do
+getProjectR :: Text -> Text -> Handler Html
+getProjectR login projectName  = do
     extra <- getExtra
     defaultLayout $ do
         identityDescription <- newIdent
         identityLogList <- newIdent
         identityReadme <- newIdent
         setTitle $ toHtml ("Hit - " `mappend` projectName)
-        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) projectName
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projectName
         $(widgetFile "project-show-menu")
         case hitProjectPath of
             Nothing   -> error $ "No such project: " ++ (T.unpack projectName)

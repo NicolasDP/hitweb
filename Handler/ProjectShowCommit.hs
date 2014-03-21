@@ -21,13 +21,13 @@ import System.Locale
 myGetCommit :: Ref -> Git -> IO (Maybe Commit)
 myGetCommit ref git = getCommitMaybe git ref
 
-getProjectShowCommitR :: Text -> Text -> Handler Html
-getProjectShowCommitR projectName ref = do
+getProjectShowCommitR :: Text -> Text -> Text -> Handler Html
+getProjectShowCommitR login projectName ref = do
     let currentRef = ref
     extra <- getExtra
     defaultLayout $ do
         setTitle $ toHtml ("Hit - " `mappend` projectName)
-        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) projectName
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projectName
         $(widgetFile "project-show-menu")
         case hitProjectPath of
             Nothing   -> error $ "No such project: " ++ (T.unpack projectName)

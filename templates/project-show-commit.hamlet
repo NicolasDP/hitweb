@@ -13,22 +13,22 @@
     <tr>
       <th .#{commitHeaderId}>commit
       <td>
-        <a href=@{ProjectShowCommitR projectName currentRef}>
+        <a href=@{ProjectShowCommitR login projectName currentRef}>
           #{currentRef}
     <tr>
       <th .#{commitHeaderId}>tree
       <td>
-        <a href=@{ProjectShowTreeR projectName $ T.pack $ toHexString $ commitTreeish commit}>
+        <a href=@{ProjectShowTreeR login projectName $ T.pack $ toHexString $ commitTreeish commit}>
           #{toHexString $ commitTreeish commit}
     $forall parent <- commitParents commit
       <tr>
         <th .#{commitHeaderId}>parent
         <td>
-          <a href=@{ProjectShowCommitR projectName $ T.pack $ toHexString parent}>
+          <a href=@{ProjectShowCommitR login projectName $ T.pack $ toHexString parent}>
             #{toHexString parent}
         <td>
           (
-          <a href=@{ProjectShowDiffR projectName (T.pack $ toHexString parent) currentRef}>
+          <a href=@{ProjectShowDiffR login projectName (T.pack $ toHexString parent) currentRef}>
             Diff
           )
 

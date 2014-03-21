@@ -11,12 +11,12 @@
           <td .#{identityNew ++ "mode"}>#{show priv}
           <td .#{identityNew ++ "name"}>#{BC.unpack name}
           <td .#{identityNew ++ "ref"}>
-            <a href=@{ProjectShowBlobR projectName $ T.pack $ toHexString refFile}>
+            <a href=@{ProjectShowBlobR login projectName $ T.pack $ toHexString refFile}>
               #{toHexString refFile}
         $of (priv, name, TreeDir refDir _)
           <td .#{identityNew ++ "mode"}>#{show priv}
           <td .#{identityNew ++ "name"}">
             <b>#{BC.unpack name}
           <td .#{identityNew ++ "ref"}>
-            <a href=@{ProjectShowTreeR projectName $ T.pack $ toHexString refDir}>
+            <a href=@{ProjectShowTreeR login projectName $ T.pack $ toHexString refDir}>
               #{toHexString refDir}

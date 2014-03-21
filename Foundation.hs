@@ -52,11 +52,11 @@ mkYesodData "App" $(parseRoutesFile "config/routes")
 
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
 
-checkAuthorization :: Text -> HandlerT App IO AuthResult
-checkAuthorization projectName = do
+checkAuthorization :: Text -> Text -> HandlerT App IO AuthResult
+checkAuthorization login projectName = do
     extra <- getExtra
     let dirPath = extraProjectsDir extra
-    requiredAuth <- liftIO $ doesProjectRequiredAuth dirPath projectName
+    requiredAuth <- liftIO $ doesProjectRequiredAuth dirPath login projectName
     case requiredAuth of
         False -> return Authorized            -- No Authentication required
         True  -> checkUserAuth dirPath
@@ -65,12 +65,12 @@ checkAuthorization projectName = do
         checkUserAuth dirPath = do
             mId <- maybeAuth
             case mId of
-                Nothing           -> liftIO $ doesUserIsAuthorized dirPath projectName Nothing
+                Nothing           -> liftIO $ doesUserIsAuthorized dirPath login projectName Nothing
                 Just (Entity _ n) -> do
                     case identityStatus n of
                         EmailNotAuthentified -> error "email not validated yet: TODO"
                         UserNotCreated -> redirect UserCreationR
-                        UserCreated    -> liftIO $ doesUserIsAuthorized dirPath projectName $ Just n
+                        UserCreated    -> liftIO $ doesUserIsAuthorized dirPath login projectName $ Just n
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
@@ -127,12 +127,12 @@ instance Yesod App where
 
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
-    isAuthorized (ProjectR           projectName    ) _ = checkAuthorization projectName
-    isAuthorized (ProjectShowCommitR projectName _  ) _ = checkAuthorization projectName
-    isAuthorized (ProjectShowTreeR   projectName _  ) _ = checkAuthorization projectName
-    isAuthorized (ProjectShowDiffR   projectName _ _) _ = checkAuthorization projectName
-    isAuthorized (ProjectShowBlobR   projectName _  ) _ = checkAuthorization projectName
-    isAuthorized _                                    _ = return Authorized
+    isAuthorized (ProjectR           login projectName    ) _ = checkAuthorization login projectName
+    isAuthorized (ProjectShowCommitR login projectName _  ) _ = checkAuthorization login projectName
+    isAuthorized (ProjectShowTreeR   login projectName _  ) _ = checkAuthorization login projectName
+    isAuthorized (ProjectShowDiffR   login projectName _ _) _ = checkAuthorization login projectName
+    isAuthorized (ProjectShowBlobR   login projectName _  ) _ = checkAuthorization login projectName
+    isAuthorized _                                          _ = return Authorized
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows

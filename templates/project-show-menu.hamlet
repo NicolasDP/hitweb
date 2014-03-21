@@ -1,16 +1,16 @@
 <h2>
   Project: #
-    <a href=@{ProjectR projectName}>
+    <a href=@{ProjectR login projectName}>
       #{projectName}
 
 <div class="project-menu">
   <ul class="project-menu">
     <li class="project-menu">
-      <a href=@{ProjectR projectName}>
+      <a href=@{ProjectR login projectName}>
         Summary
     <li class="project-menu">
-      <a href=@{ProjectShowLogsR projectName "HEAD" 20}>
+      <a href=@{ProjectShowLogsR login projectName "HEAD" 20}>
         Commits
     <li class="project-menu">
-      <a href=@{ProjectShowTreeR projectName "HEAD"}>
+      <a href=@{ProjectShowTreeR login projectName "HEAD"}>
         Tree

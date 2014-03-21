@@ -14,13 +14,13 @@ import Data.ByteString.Lazy.Char8 as BL
 myGetBlobMaybe :: Ref -> Git -> IO (Maybe ObjectInfo)
 myGetBlobMaybe ref git = getObjectRaw git ref True
 
-getProjectShowBlobR :: Text -> Text -> Handler Html
-getProjectShowBlobR projectName ref = do
+getProjectShowBlobR :: Text -> Text -> Text -> Handler Html
+getProjectShowBlobR login projectName ref = do
     extra <- getExtra
     defaultLayout $ do
         identityTree <- newIdent
         setTitle $ toHtml ("Hit - " `mappend` projectName)
-        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) projectName
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projectName
         $(widgetFile "project-show-menu")
         case hitProjectPath of
             Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
