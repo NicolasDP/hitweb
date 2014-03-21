@@ -4,8 +4,8 @@
       <a .#{headerCtxId} href="@{HomeR}">HitWeb
     <nav .#{headerCtxNavId}>
       <ul .#{headerCtxNavId}>
-        $case person
-          $of Just user
+        $case (maid, person)
+          $of (Just _, Just user)
             <li .#{headerCtxNavId}>
               <a .#{headerCtxId} href=@{UserMainPageR $ userLogin user}>
                 #{userLogin user}
@@ -13,6 +13,11 @@
               <a .#{headerCtxId} href="#">Settings
             <li .#{headerCtxNavId}>
               <a .#{headerCtxId} href=@{AuthR LogoutR}>Logout
-          $of Nothing
+          $of (Just _, _)
+            <li .#{headerCtxNavId}>
+              <a .#{headerCtxId} href=@{UserCreationR}>ToComplete
+            <li .#{headerCtxNavId}>
+              <a .#{headerCtxId} href=@{AuthR LogoutR}>Logout
+          $of (Nothing, _)
             <li .#{headerCtxNavId}>
               <a .#{headerCtxId} href=@{AuthR LoginR}>Login

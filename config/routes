@@ -12,4 +12,5 @@
 /project/#Text/#Text/tree/#Text ProjectShowTreeR GET
 /project/#Text/#Text/blob/#Text ProjectShowBlobR GET
 /project/#Text/#Text/logs/#Text/size/#Integer ProjectShowLogsR GET
-/user/create UserCreationR GET POST
+
+/settings/user/create UserCreationR GET POST

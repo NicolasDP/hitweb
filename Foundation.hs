@@ -69,8 +69,11 @@ checkAuthorization login projectName = do
                 Just (Entity _ n) -> do
                     case identityStatus n of
                         EmailNotAuthentified -> error "email not validated yet: TODO"
-                        UserNotCreated -> redirect UserCreationR
-                        UserCreated    -> liftIO $ doesUserIsAuthorized dirPath login projectName $ Just n
+                        UserNotCreated -> do
+                            setMessage "registration not completed yet"
+                            redirect UserCreationR
+                        UserCreated    -> do
+                            liftIO $ doesUserIsAuthorized dirPath login projectName $ Just n
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
