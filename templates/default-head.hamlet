@@ -10,14 +10,19 @@
               <a .#{headerCtxId} href=@{UserMainPageR $ userLogin user}>
                 #{userLogin user}
             <li .#{headerCtxNavId}>
-              <a .#{headerCtxId} href="#">Settings
+              <a .#{headerCtxId} href="#">
+                Settings
             <li .#{headerCtxNavId}>
-              <a .#{headerCtxId} href=@{AuthR LogoutR}>Logout
+              <a .#{headerCtxId} href=@{AuthR LogoutR}>
+                Logout
           $of (Just _, _)
             <li .#{headerCtxNavId}>
-              <a .#{headerCtxId} href=@{UserCreationR}>ToComplete
+              <a .#{headerCtxId} href=@{UserCreationR}>
+                Settings
             <li .#{headerCtxNavId}>
-              <a .#{headerCtxId} href=@{AuthR LogoutR}>Logout
+              <a .#{headerCtxId} href=@{AuthR LogoutR}>
+                Logout
           $of (Nothing, _)
             <li .#{headerCtxNavId}>
-              <a .#{headerCtxId} href=@{AuthR LoginR}>Login
+              <a .#{headerCtxId} href=@{AuthR LoginR}>
+                Login

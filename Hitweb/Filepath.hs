@@ -3,6 +3,7 @@
 module Hitweb.Filepath
     ( getProjectPath
     , listProjectIn
+    , createUserIn
     ) where
 
 import Prelude
@@ -47,3 +48,8 @@ listProjectIn (FSP.fromText -> rootPath)
             case pathMaybe of
                 Just _  -> (either id id (FSP.toText $ FSP.filename t):) <$> accu
                 Nothing -> accu
+
+createUserIn :: Text -> Text -> IO ()
+createUserIn (FSP.fromText -> dir)
+             (FSP.fromText -> user) =
+    createDirectory False $ dir </> user
