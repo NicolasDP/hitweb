@@ -181,6 +181,15 @@ instance YesodAuth App where
 
     authHttpManager = httpManager
 
+    loginHandler = do
+        signInId <- newIdent
+        tm <- getRouteToParent
+        master <- lift getYesod
+        lift $ defaultLayout $ do
+            aDomId <- newIdent
+            setTitle "Hitweb - Sign In"
+            $(widgetFile "default-login")
+
 -- This instance is required to use forms. You can modify renderMessage to
 -- achieve customized and internationalized form validation messages.
 instance RenderMessage App FormMessage where

@@ -1,0 +1,7 @@
+<div .#{signInId}>
+  <h1>
+    Login In
+  <p>
+    Select login method:
+  <div class="auth-list">
+    ^{mapM_ (flip apLogin tm) (authPlugins master)}

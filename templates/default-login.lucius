@@ -1,0 +1,10 @@
+div.#{signInId}
+{
+  margin: 0px;
+  padding: 0px;
+}
+
+div.auth-list
+{
+  margin: 10px;
+}
