@@ -18,6 +18,18 @@ div.#{messageIdentity}
   font-size: 1.3em;
 }
 
+div.#{mainIdentity}
+{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 0;
+}
+
 /* Footer */
 
 footer {
