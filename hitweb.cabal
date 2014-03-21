@@ -29,6 +29,7 @@ library
                      Handler.UserCreation
                      Hitweb.Auth
                      Hitweb.Filepath
+                     Hitweb.Identity
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

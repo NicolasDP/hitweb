@@ -8,7 +8,7 @@ entryForm identityId = renderDivs $ User
     <$> areq textField "Pseudo" Nothing
     <*> areq textField "Firstname" Nothing
     <*> areq textField "Lastname" Nothing
-    <*> areq hiddenField "" (Just identityId)
+    <*> pure identityId
 
 getUserCreationR :: Handler Html
 getUserCreationR = do
@@ -37,7 +37,7 @@ postUserCreationR = do
            case res of
               FormSuccess user -> do
                   userId <- runDB $ insert user
-                  runDB $ updateWhere [IdentityId ==. i] [IdentityStatus =. (Just "stage 1"), IdentityUserInfo =. (Just userId)]
+                  runDB $ updateWhere [IdentityId ==. i] [IdentityStatus =. UserCreated, IdentityUserInfo =. (Just userId)]
                   setMessage $ toHtml $ "user created: " ++ (show $ userFirstname user) ++ " " ++ (show $ userLastname user)
                   redirect HomeR
               _ -> do

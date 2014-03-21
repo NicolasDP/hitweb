@@ -1,7 +1,7 @@
 Identity
     ident Text
     password Text Maybe
-    status Text Maybe
+    status IdValidationStatus
     userInfo UserId Maybe
     UniqueIdentity ident
     deriving Typeable Show

@@ -23,6 +23,7 @@ import Yesod.Core.Types (Logger)
 import Data.Text as T (Text)
 
 import Hitweb.Auth
+import Hitweb.Identity
 
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -67,8 +68,9 @@ checkAuthorization projectName = do
                 Nothing           -> liftIO $ doesUserIsAuthorized dirPath projectName Nothing
                 Just (Entity _ n) -> do
                     case identityStatus n of
-                        Nothing -> redirect UserCreationR
-                        Just _ -> liftIO $ doesUserIsAuthorized dirPath projectName $ Just n
+                        EmailNotAuthentified -> error "email not validated yet: TODO"
+                        UserNotCreated -> redirect UserCreationR
+                        UserCreated    -> liftIO $ doesUserIsAuthorized dirPath projectName $ Just n
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
@@ -174,7 +176,7 @@ instance YesodAuth App where
         case x of
             Just (Entity uid _) -> return $ Just uid
             Nothing -> do
-                fmap Just $ insert $ Identity (credsIdent creds) Nothing Nothing Nothing
+                fmap Just $ insert $ Identity (credsIdent creds) Nothing UserNotCreated Nothing
 
     -- You can add other plugins like BrowserID, email or OAuth here
     authPlugins _ = [authBrowserId def, authGoogleEmail]
