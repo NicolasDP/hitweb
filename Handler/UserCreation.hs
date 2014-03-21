@@ -5,15 +5,16 @@ import Import
 
 entryForm :: Key Identity -> Form User
 entryForm identityId = renderDivs $ User
-    <$> areq textField "login" Nothing
-    <*> areq textField "firstname" Nothing
-    <*> areq textField "lastname" Nothing
+    <$> areq textField "Pseudo" Nothing
+    <*> areq textField "Firstname" Nothing
+    <*> areq textField "Lastname" Nothing
     <*> areq hiddenField "" (Just identityId)
 
 getUserCreationR :: Handler Html
 getUserCreationR = do
     extra <- getExtra
     userIdentity <- maybeAuth
+    createWidgetId <- newIdent
     case userIdentity of
        Nothing           -> do
           setMessage "use login system to create a new user first"

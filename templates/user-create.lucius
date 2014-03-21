@@ -1,0 +1,13 @@
+div.required
+{
+}
+
+label
+{
+  padding-right: 10px;
+}
+
+input
+{
+  padding:0px;
+}
