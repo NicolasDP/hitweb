@@ -175,8 +175,9 @@ instance YesodAuth App where
         x <- getBy $ UniqueIdentity $ credsIdent creds
         case x of
             Just (Entity uid _) -> return $ Just uid
-            Nothing -> do
-                fmap Just $ insert $ Identity (credsIdent creds) Nothing UserNotCreated Nothing
+            Nothing             -> do
+                _ <- insert $ Identity (credsIdent creds) Nothing UserNotCreated Nothing
+                redirect UserCreationR
 
     -- You can add other plugins like BrowserID, email or OAuth here
     authPlugins _ = [authBrowserId def, authGoogleEmail]
