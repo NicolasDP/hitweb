@@ -1,0 +1,21 @@
+<div .#{settingsUserProjectWidgetId}>
+  <h1 .#{settingsUserProjectWidgetId}>
+    Projects management
+
+  <h2 .#{settingsUserProjectWidgetId}>
+    Options:
+  <ul .#{settingsUserProjectWidgetId}>
+    <li .#{settingsUserProjectWidgetId}>
+      <a .#{settingsUserProjectWidgetId} href=@{SettingsUserProjectCreateR}>
+        Create a new project
+
+  <h2 .#{settingsUserProjectWidgetId}>
+    Projects:
+  <ul .#{settingsUserProjectWidgetId}>
+    $forall proj <- userProjList
+      $with Entity _ p <- proj
+        <li .#{settingsUserProjectWidgetId}>
+          #{projectName p} (
+          <a .#{settingsUserProjectWidgetId} href=@{SettingsUserProjectDeleteR [projectName p]}>
+            Delete
+          )

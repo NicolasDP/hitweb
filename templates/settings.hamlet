@@ -3,3 +3,6 @@
     <li .#{userSettingsWidgetId}>
       <a .#{userSettingsWidgetId} href=@{SettingsUserDeleteR}>
         Delete account
+    <li .#{userSettingsWidgetId}>
+      <a .#{userSettingsWidgetId} href=@{SettingsUserProjectR}>
+        Projects

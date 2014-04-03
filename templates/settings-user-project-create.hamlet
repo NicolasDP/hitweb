@@ -1,0 +1,7 @@
+<div .#{settingsUserProjectCreateWidgetId}>
+  <h1 .#{settingsUserProjectCreateWidgetId}>
+    New Project
+  <form method=post enctype=#{enctype} .#{settingsUserProjectCreateWidgetId}>
+    ^{projectCreationFormWidget}
+    <div .#{settingsUserProjectCreateWidgetId}>
+      <input type=submit value="Create" .#{settingsUserProjectCreateWidgetId}>
