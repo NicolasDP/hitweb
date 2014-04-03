@@ -24,14 +24,14 @@ myGetCommitList ref i git = do
         (p:_) -> ((ref, commit):) <$> (myGetCommitList p (i-1) git)
 
 getProjectShowLogsR :: Text -> Text -> Text -> Integer -> Handler Html
-getProjectShowLogsR login projectName ref size = do
+getProjectShowLogsR login projName ref size = do
     extra <- getExtra
     defaultLayout $ do
-        setTitle $ toHtml ("Hit - " `mappend` projectName)
-        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projectName
+        setTitle $ toHtml ("Hit - " `mappend` projName)
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projName
         $(widgetFile "project-show-menu")
         case hitProjectPath of
-            Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
+            Nothing   -> error $ "No such project: " ++ (T.unpack projName)
             Just path -> do
               let stringRef = T.unpack ref
               git <- liftIO $ openRepo path

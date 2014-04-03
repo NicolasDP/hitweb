@@ -1,0 +1,10 @@
+<div .#{userDeleteWidgetId}>
+  <h1 .#{userDeleteWidgetId}>
+    Delete account:
+  <p .#{userDeleteWidgetId}>
+    <b>
+      This action will delete your user account and your repositories. This
+      action is not reversible.
+  <form method=post enctype=#{UrlEncoded} .#{userDeleteWidgetId}>
+    <div .#{userDeleteWidgetId}>
+      <input type=submit value="Delete" .#{userDeleteWidgetId}>

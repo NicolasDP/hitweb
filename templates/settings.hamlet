@@ -1,0 +1,5 @@
+<div .#{userSettingsWidgetId}>
+  <ul .#{userSettingsWidgetId}>
+    <li .#{userSettingsWidgetId}>
+      <a .#{userSettingsWidgetId} href=@{SettingsUserDeleteR}>
+        Delete account

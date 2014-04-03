@@ -14,4 +14,9 @@ User
     UniqueUser login
     deriving Typeable Show
 
+Project
+    name Text
+    ident IdentityId
+    deriving Typeable Show
+
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

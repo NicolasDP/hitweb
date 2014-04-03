@@ -13,4 +13,6 @@
 /project/#Text/#Text/blob/#Text ProjectShowBlobR GET
 /project/#Text/#Text/logs/#Text/size/#Integer ProjectShowLogsR GET
 
+/settings/user SettingsUserR GET POST
 /settings/user/create UserCreationR GET POST
+/settings/user/delete SettingsUserDeleteR GET POST

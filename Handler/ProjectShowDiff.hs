@@ -13,14 +13,14 @@ import Data.ByteString.Char8 as BC (unpack)
 import Data.ByteString.Lazy.Char8 as BL (unpack)
 
 getProjectShowDiffR :: Text -> Text -> Text -> Text -> Handler Html
-getProjectShowDiffR login projectName oldRef newRef = do
+getProjectShowDiffR login projName oldRef newRef = do
     extra <- getExtra
     defaultLayout $ do
-        setTitle $ toHtml ("Hit - " `mappend` projectName)
-        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projectName
+        setTitle $ toHtml ("Hit - " `mappend` projName)
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projName
         $(widgetFile "project-show-menu")
         case hitProjectPath of
-            Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
+            Nothing   -> error $ "No such project: " ++ (T.unpack projName)
             Just path -> do
                     diffList <- liftIO $ withRepo path $ getDiff (fromHexString $ T.unpack oldRef) (fromHexString $ T.unpack newRef)
                     $(widgetFile "project-show-diff")

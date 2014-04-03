@@ -22,15 +22,15 @@ myGetCommit :: Ref -> Git -> IO (Maybe Commit)
 myGetCommit ref git = getCommitMaybe git ref
 
 getProjectShowCommitR :: Text -> Text -> Text -> Handler Html
-getProjectShowCommitR login projectName ref = do
+getProjectShowCommitR login projName ref = do
     let currentRef = ref
     extra <- getExtra
     defaultLayout $ do
-        setTitle $ toHtml ("Hit - " `mappend` projectName)
-        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projectName
+        setTitle $ toHtml ("Hit - " `mappend` projName)
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projName
         $(widgetFile "project-show-menu")
         case hitProjectPath of
-            Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
+            Nothing   -> error $ "No such project: " ++ (T.unpack projName)
             Just path -> do
                 commitMaybe <- liftIO $ withRepo path $ myGetCommit $ fromHexString $ T.unpack ref
                 case commitMaybe of
@@ -41,4 +41,4 @@ getProjectShowCommitR login projectName ref = do
                                       diffList <- liftIO $ withRepo path $ getDiff (L.head $ commitParents commit) (fromHexString $ T.unpack ref)
                                       identityDiffFile <- newIdent
                                       $(widgetFile "project-show-diff-file")
-                    Nothing     -> error $ "Ref \"" ++ (T.unpack ref) ++ "\" unknown for project: " ++ (T.unpack projectName)
+                    Nothing     -> error $ "Ref \"" ++ (T.unpack ref) ++ "\" unknown for project: " ++ (T.unpack projName)

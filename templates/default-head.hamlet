@@ -10,7 +10,7 @@
               <a .#{headerCtxId} href=@{UserMainPageR $ userLogin user}>
                 #{userLogin user}
             <li .#{headerCtxNavId}>
-              <a .#{headerCtxId} href="#">
+              <a .#{headerCtxId} href=@{SettingsUserR}>
                 Settings
             <li .#{headerCtxNavId}>
               <a .#{headerCtxId} href=@{AuthR LogoutR}>

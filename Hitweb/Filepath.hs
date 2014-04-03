@@ -4,6 +4,7 @@ module Hitweb.Filepath
     ( getProjectPath
     , listProjectIn
     , createUserIn
+    , deleteUserIn
     ) where
 
 import Prelude
@@ -53,3 +54,8 @@ createUserIn :: Text -> Text -> IO ()
 createUserIn (FSP.fromText -> dir)
              (FSP.fromText -> user) =
     createDirectory False $ dir </> user
+
+deleteUserIn :: Text -> Text -> IO ()
+deleteUserIn (FSP.fromText -> dir)
+             (FSP.fromText -> user) =
+     removeTree $ dir </> user

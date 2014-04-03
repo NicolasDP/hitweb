@@ -48,17 +48,17 @@ getReadmeContent rev git = do
 
 -- This is the project summary handler.
 getProjectR :: Text -> Text -> Handler Html
-getProjectR login projectName  = do
+getProjectR login projName  = do
     extra <- getExtra
     defaultLayout $ do
         identityDescription <- newIdent
         identityLogList <- newIdent
         identityReadme <- newIdent
-        setTitle $ toHtml ("Hit - " `mappend` projectName)
-        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projectName
+        setTitle $ toHtml ("Hit - " `mappend` projName)
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projName
         $(widgetFile "project-show-menu")
         case hitProjectPath of
-            Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
+            Nothing   -> error $ "No such project: " ++ (T.unpack projName)
             Just path -> do
                 commits     <- liftIO $ withRepo path $ getLogList (fromString "master")
                 description <- liftIO $ withRepo path $ getDescription

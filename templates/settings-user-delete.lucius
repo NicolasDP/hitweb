@@ -1,0 +1,9 @@
+input.#{userDeleteWidgetId}
+{
+  padding:0px;
+}
+
+p.#{userDeleteWidgetId}
+{
+  color: red;
+}

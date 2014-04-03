@@ -15,15 +15,15 @@ myGetBlobMaybe :: Ref -> Git -> IO (Maybe ObjectInfo)
 myGetBlobMaybe ref git = getObjectRaw git ref True
 
 getProjectShowBlobR :: Text -> Text -> Text -> Handler Html
-getProjectShowBlobR login projectName ref = do
+getProjectShowBlobR login projName ref = do
     extra <- getExtra
     defaultLayout $ do
         identityTree <- newIdent
-        setTitle $ toHtml ("Hit - " `mappend` projectName)
-        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projectName
+        setTitle $ toHtml ("Hit - " `mappend` projName)
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projName
         $(widgetFile "project-show-menu")
         case hitProjectPath of
-            Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
+            Nothing   -> error $ "No such project: " ++ (T.unpack projName)
             Just path -> do
                 let identityNew = T.unpack identityTree
                 fileContent <- liftIO $ withRepo path $ myGetBlobMaybe $ fromHexString $ T.unpack ref

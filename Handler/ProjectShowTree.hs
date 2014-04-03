@@ -19,15 +19,15 @@ myGetTreeMaybe ref git = do
         Nothing -> return []
 
 getProjectShowTreeR :: Text -> Text -> Text -> Handler Html
-getProjectShowTreeR login projectName ref = do
+getProjectShowTreeR login projName ref = do
     extra <- getExtra
     defaultLayout $ do
         identityTree <- newIdent
-        setTitle $ toHtml $ "Hit - " ++ (T.unpack projectName)
-        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projectName
+        setTitle $ toHtml $ "Hit - " ++ (T.unpack projName)
+        hitProjectPath <- liftIO $ getProjectPath (extraProjectsDir extra) login projName
         $(widgetFile "project-show-menu")
         case hitProjectPath of
-            Nothing   -> error $ "No such project: " ++ (T.unpack projectName)
+            Nothing   -> error $ "No such project: " ++ (T.unpack projName)
             Just path -> do
                 let stringRef = T.unpack ref
                 git <- liftIO $ openRepo path
