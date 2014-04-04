@@ -1,0 +1,9 @@
+<div .#{projectSettingsWidgetId}>
+  <h1 .#{projectSettingsWidgetId}>
+    Project Settings:
+    <a .#{projectSettingsWidgetId} href=@{ProjectR login projName}>
+      #{login}/#{projName}
+  <ul .#{projectSettingsWidgetId}>
+    <li .#{projectSettingsWidgetId}>
+      <a .#{projectSettingsWidgetId} href=@{SettingsProjectDeleteR login projName}>
+        Delete

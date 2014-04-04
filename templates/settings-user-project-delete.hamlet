@@ -1,6 +1,6 @@
 <div .#{settingsUserProjectDeleteWidgetId}>
   <h1 .#{settingsUserProjectDeleteWidgetId}>
-    Delete project:
+    Delete project: #{login}/#{projName}
   <p .#{settingsUserProjectDeleteWidgetId}>
     <b>
       This action will delete your project and is not reversible.

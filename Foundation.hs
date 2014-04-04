@@ -135,7 +135,7 @@ instance Yesod App where
     isAuthorized (ProjectShowTreeR   login projName _  ) _ = checkAuthorization login projName
     isAuthorized (ProjectShowDiffR   login projName _ _) _ = checkAuthorization login projName
     isAuthorized (ProjectShowBlobR   login projName _  ) _ = checkAuthorization login projName
-    isAuthorized _                                          _ = return Authorized
+    isAuthorized _                                       _ = return Authorized
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows

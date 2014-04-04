@@ -29,6 +29,7 @@ library
                      Handler.UserCreation
                      Handler.UserMainPage
                      Handler.SettingsUser
+                     Handler.SettingsProject
                      Hitweb.Auth
                      Hitweb.Filepath
                      Hitweb.Identity

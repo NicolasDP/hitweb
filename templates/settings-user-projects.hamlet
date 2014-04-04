@@ -6,18 +6,18 @@
     Options:
   <ul .#{settingsUserProjectWidgetId}>
     <li .#{settingsUserProjectWidgetId}>
-      <a .#{settingsUserProjectWidgetId} href=@{SettingsUserProjectCreateR}>
+      <a .#{settingsUserProjectWidgetId} href=@{SettingsProjectCreateR (userLogin u) "TODO"}>
         Create a new project
 
   <h2 .#{settingsUserProjectWidgetId}>
     Projects:
   <ul .#{settingsUserProjectWidgetId}>
     $forall proj <- userProjList
-      $with (Entity _ p, Entity _ u) <- (proj, head userList)
+      $with Entity _ p <- proj
         <li .#{settingsUserProjectWidgetId}>
           <a .#{settingsUserProjectWidgetId} href=@{ProjectR (userLogin u) (projectName p)}>
             #{projectName p}
           (
-          <a .#{settingsUserProjectWidgetId} href=@{SettingsUserProjectDeleteR [projectName p]}>
+          <a .#{settingsUserProjectWidgetId} href=@{SettingsProjectDeleteR (userLogin u) (projectName p)}>
             Delete
           )

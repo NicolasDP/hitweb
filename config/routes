@@ -13,9 +13,11 @@
 /project/#Text/#Text/blob/#Text ProjectShowBlobR GET
 /project/#Text/#Text/logs/#Text/size/#Integer ProjectShowLogsR GET
 
-/settings/user SettingsUserR GET POST
-/settings/user/create UserCreationR GET POST
-/settings/user/delete SettingsUserDeleteR GET POST
+/settings/user         SettingsUserR        GET POST
+/settings/user/create  UserCreationR        GET POST
+/settings/user/delete  SettingsUserDeleteR  GET POST
 /settings/user/project SettingsUserProjectR GET POST
-/settings/user/project/create SettingsUserProjectCreateR GET POST
-/settings/user/project/delete/*Texts SettingsUserProjectDeleteR GET POST
+
+/settings/project/#Text/#Text        SettingsProjectR       GET POST
+/settings/project/#Text/#Text/create SettingsProjectCreateR GET POST
+/settings/project/#Text/#Text/delete SettingsProjectDeleteR GET POST
