@@ -6,6 +6,7 @@ module Hitweb.Filepath
     , createUserIn
     , deleteUserIn
     , createProjectIn
+    , deleteProjectIn
     ) where
 
 import Prelude
@@ -64,6 +65,15 @@ deleteUserIn (FSP.fromText -> dir)
 createProjectIn :: Text -> Text -> Text -> IO ()
 createProjectIn (FSP.fromText -> dir)
                 (FSP.fromText -> user)
+                (FSP.fromText -> proj) = do
+    let projectDir = dir </> user </> proj
+    initRepo projectDir
+    -- TODO: this might not be the right action to initialize the repository
+    FSP.writeFile (projectDir </> (FSP.fromText "HEAD")) "ref: refs/heads/master"
+
+
+deleteProjectIn :: Text -> Text -> Text -> IO ()
+deleteProjectIn (FSP.fromText -> dir)
+                (FSP.fromText -> user)
                 (FSP.fromText -> proj) =
-    let projectPath = dir </> user </> proj
-    in  initRepo projectPath
+    removeTree $ dir </> user </> proj

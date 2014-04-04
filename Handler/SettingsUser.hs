@@ -2,6 +2,7 @@
 module Handler.SettingsUser where
 
 import Import
+import Data.List (head)
 
 ------------------------------------------------------------------------------
 -- Main setting page ---------------------------------------------------------
@@ -77,6 +78,7 @@ getSettingsUserProjectR = do
           redirect HomeR
        Just (Entity i _) -> do
           userProjList <- runDB $ selectList [ProjectIdent ==. i] []
+          userList <- runDB $ selectList [UserIdent ==. i] []
           defaultLayout $ do
               setTitle "Hit - User:Settings:Projects"
               $(widgetFile "settings-user-projects")
@@ -139,8 +141,34 @@ postSettingsUserProjectCreateR = do
 ------------------------------------------------------------------------------
 
 getSettingsUserProjectDeleteR :: [Text] -> Handler Html
-getSettingsUserProjectDeleteR = error "Not yet implemented"
+getSettingsUserProjectDeleteR [projName] = do
+    userIdentity <- maybeAuth
+    settingsUserProjectDeleteWidgetId <- newIdent
+    case userIdentity of
+       Nothing           -> do
+          setMessage "use login system to create a new user first"
+          redirect HomeR
+       Just (Entity i _) -> do
+          defaultLayout $ do
+              setTitle "Hit - User:Settings:Delete"
+              $(widgetFile "settings-user-project-delete")
+getSettingsUserProjectDeleteR _ = error "Not yet implemented"
+
 
 postSettingsUserProjectDeleteR :: [Text] -> Handler Html
-postSettingsUserProjectDeleteR = error "Not yet implemented"
-
+postSettingsUserProjectDeleteR [projName] = do
+    extra <- getExtra
+    userIdentity <- maybeAuth
+    case userIdentity of
+       Nothing           -> do
+          setMessage "use login system to create a new user first"
+          redirect HomeR
+       Just (Entity i _) -> do
+           user <- runDB $ selectFirst [UserIdent ==. i] []
+           runDB $ deleteWhere [ProjectIdent ==. i, ProjectName ==. projName]
+           case user of
+               Just (Entity _ u) -> lift $ deleteProjectIn (extraProjectsDir extra) (userLogin u) projName
+               _                 -> return ()
+           setMessage "Your project has been deleted"
+           redirect SettingsUserProjectR
+postSettingsUserProjectDeleteR _ = error "Not yet implemented"

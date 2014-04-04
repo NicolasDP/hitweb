@@ -1,0 +1,9 @@
+input.#{settingsUserProjectDeleteWidgetId}
+{
+  padding:0px;
+}
+
+p.#{settingsUserProjectDeleteWidgetId}
+{
+  color: red;
+}

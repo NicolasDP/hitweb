@@ -13,9 +13,11 @@
     Projects:
   <ul .#{settingsUserProjectWidgetId}>
     $forall proj <- userProjList
-      $with Entity _ p <- proj
+      $with (Entity _ p, Entity _ u) <- (proj, head userList)
         <li .#{settingsUserProjectWidgetId}>
-          #{projectName p} (
+          <a .#{settingsUserProjectWidgetId} href=@{ProjectR (userLogin u) (projectName p)}>
+            #{projectName p}
+          (
           <a .#{settingsUserProjectWidgetId} href=@{SettingsUserProjectDeleteR [projectName p]}>
             Delete
           )

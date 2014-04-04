@@ -1,0 +1,9 @@
+<div .#{settingsUserProjectDeleteWidgetId}>
+  <h1 .#{settingsUserProjectDeleteWidgetId}>
+    Delete project:
+  <p .#{settingsUserProjectDeleteWidgetId}>
+    <b>
+      This action will delete your project and is not reversible.
+  <form method=post enctype=#{UrlEncoded} .#{settingsUserProjectDeleteWidgetId}>
+    <div .#{settingsUserProjectDeleteWidgetId}>
+      <input type=submit value="Delete" .#{settingsUserProjectDeleteWidgetId}>
